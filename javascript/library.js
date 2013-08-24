@@ -147,7 +147,6 @@ function loop(){
 }
 function runEnemy(val, ind, arr){
 	var thug = val;
-	//thug.velocityX = 5/3;
 	if(!onGround(thug.sprite)){
 		thug.velocityY += constants.gravity;
 		thug.velocityY = (collideHead(thug.sprite))?1:thug.velocityY;
@@ -218,8 +217,8 @@ function startPlayer(){
 }
 function BadGuy(x,y,image){
 	this.sprite= new Kinetic.Sprite({
-	    x: 400,
-	    y: 100,
+	    x: x,
+	    y: y,
 	    image: image,
 	    animation: 'walk',
 	    animations: personanimation,
