@@ -25,7 +25,7 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[600,300,64,96]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[-64,240,64,128],[64,160,400,64],[600,300,64,96]]});
   start();
 }
 

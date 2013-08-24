@@ -1,6 +1,9 @@
 function onGround(){
 	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY()+64)||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY()+64);
 }
+function collideHead(){
+	return  collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY())||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY());
+}
 function collideLeft(){
 	if(spy.getScaleX() > 0)
 		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
@@ -71,6 +74,7 @@ function loop(){
 		if(spy.getAnimation() == 'walk' ){
 			spy.setAnimation('jump_stay')
 		}
+		velocityY = (collideHead())?1:velocityY;
 		constants.jumped=true;
 	}else{
 		if(constants.goingRight){
