@@ -1,5 +1,6 @@
 var keys = [];
 var bindingsDown = [], bindingsUp = [];
+var down = 83, left = 65, right = 68, up=87;
 document.onkeydown = function(evt){
   if(!keys[evt.keyCode] ){
     keys[evt.keyCode] = true;
