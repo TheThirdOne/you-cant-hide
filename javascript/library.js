@@ -165,9 +165,20 @@ function runEnemy(val, ind, arr){
 		}
 		thug.velocityY = 0;
 	}
-	if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
-		thug.velocityX *= -1;
-		thug.setDirection(-1 * thug.sprite.getScaleX());
+	if(thug.decay==166){
+		if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
+			thug.velocityX *= -1;
+			thug.setDirection(-1 * thug.sprite.getScaleX());
+		}
+	}else{
+		thug.decay--;
+		if(onGround(thug.sprite)){
+			thug.velocityX = 0;
+		}
+		thug.sprite.setOpacity(thug.decay/166);
+		if(thug.decay < 0){
+			thug.sprite.destroy();
+		}
 	}
 	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
 	thug.sprite.setY(thug.sprite.getY()+thug.velocityY);
@@ -230,6 +241,14 @@ function BadGuy(x,y,image){
 	this.velocityX = 5/3;
 	this.velocityY = 0;
 	this.air = false;
+	this.decay = 166;
+	this.die = function(){
+		this.decay--;
+		this.sprite.setAnimation('death');
+		this.sprite.afterFrame(5,function(){
+			this.setAnimation('death_stay')
+		});
+	}
 	this.setDirection = function(direction){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){
