@@ -1,6 +1,8 @@
 var person = {
-  anims:[{name: 'idle', slides:[4]},
-         {name: 'walk', slides:[0,1,2,3]}],
+  anims:[{name: 'idle', slides:[7]},
+         {name: 'walk', slides:[0,1,2,3]},
+         {name: 'jump', slides:[4,5]},
+         {name: 'jump_stay', slides:[5]}],
          columns:4,rows:2,width:32,height:64};
 var personanimation = AnimationSet(person);
 
