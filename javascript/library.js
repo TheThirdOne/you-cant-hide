@@ -20,9 +20,12 @@ function tryLadder(){
 	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()/2,spy.getY()+32, ladders.getChildren());
 }
 function collide(x,y,children){
-	if(!children)
+	if(!children){
 		var temp = collision.getChildren();
-	else
+		if(env.fall){
+			return false;
+		}
+	}else
 		var temp = children
 	for(var i = 0; i < temp.length; i++){
 		if(!temp[i].length && testCollision(temp[i],x,y))
@@ -73,6 +76,7 @@ var env = {
 	goingRight: false,
 	jumped: false,
 	climb: false,
+	fall: false,
 	cloaked: 0
 };
 var velocityX = 0, velocityY = 0;
@@ -103,16 +107,28 @@ function loop(){
 		}
 		velocityY = 0;
 	}
-	if(env.climb && tryLadder()){
-		velocityY = -5;
-		if(constants.goingRight){
-			velocityX = constants.walkSpeed/3;
-		}else if(constants.goingLeft){
-			velocityX = -constants.walkSpeed/3;
-		}else{
-			velocityX = 0;
+	if(tryLadder()){
+		if(!onGround()){
+			velocityY=0;
+			if(constants.goingRight){
+				velocityX = constants.walkSpeed/3;
+				env.cloaked = 0;
+			}else if(constants.goingLeft){
+				velocityX = -constants.walkSpeed/3;
+				env.cloaked = 0;
+			}else{
+				velocityX = 0;
+				env.cloaked++
+			}
 		}
-		env.cloaked = 0;
+		if(env.climb){
+			velocityY = -5;
+			env.cloaked = 0;
+		}
+		if(env.fall){
+			velocityY = 5;
+			env.cloaked = 0;
+		}
 	}
 	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);

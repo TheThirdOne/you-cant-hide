@@ -29,6 +29,14 @@ bindingsDown[up] = function(){
   	env.climb = true;
   }
 };
+bindingsDown[down] = function(){
+  if(tryLadder()){
+    env.fall = true;
+  }
+};
+bindingsUp[down] = function(){
+  env.fall = false;
+};
 bindingsUp[up] = function(){
 	env.climb = false;
 }
