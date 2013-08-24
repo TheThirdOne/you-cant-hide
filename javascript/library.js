@@ -148,6 +148,14 @@ function loop(){
 function runEnemy(val, ind, arr){
 	var thug = val;
 	thug.sprite.setX(thug.sprite.getX()+1);
+	if(!onGround(thug.sprite)){
+		console.log(thug.velocityY);
+		thug.velocityY += constants.gravity;
+		thug.velocityY = (collideHead(thug.sprite))?1:thug.velocityY;
+	}else{
+		thug.velocityY = 0;
+	}
+	thug.sprite.setY(thug.sprite.getY()+thug.velocityY);
 }
 function startPlayer(){
 	player = {
@@ -203,6 +211,8 @@ function BadGuy(x,y,image){
 	    width: 32,
 	    height:64
 	  });
+	this.velocityX = 0;
+	this.velocityY = 0;
 }
 function generateCollisions(level){
 	var out = [];
