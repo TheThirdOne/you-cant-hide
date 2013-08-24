@@ -1,15 +1,17 @@
 var spy, cloak;
 var back;
 var blocks;
+var ladder;
 var stage = new Kinetic.Stage({
   container: 'container',
   width: 1000,
   height: 400
 });
 var background = new Kinetic.Layer();
+var collision = new Kinetic.Layer();
+var ladders = new Kinetic.Layer();
 var playerLayer = new Kinetic.Layer();
 var enemies = new Kinetic.Layer();
-var collision = new Kinetic.Layer();
 var hud = new Kinetic.Layer();
 
 var concretesheet = new Image();
@@ -28,14 +30,25 @@ blocksheet.onload = function(){
   blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[-64,250,64,128],[64,170,400,32],[600,300,64,96]]});
   start();
 }
-
+var laddersheet = new Image();
+laddersheet.onload = function(){
+    ladder = new Kinetic.Rect({
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 400,
+        fillPatternImage: laddersheet
+      });
+    ladder.ladder = true;
+    start();
+}
 var spysheet = new Image();
 spysheet.onload = function() {
   spy = new Kinetic.Sprite({
     x: 400,
     y: 100,
     image: spysheet,
-    animation: 'walk',
+    animation: 'idle',
     animations: personanimation,
     frameRate: 8,
     index: 0,
@@ -59,7 +72,8 @@ spysheet.src = 'res/spy.png';
 blocksheet.src = 'res/ground.png';
 concretesheet.src = 'res/concrete.png';
 cloaksheet.src = 'res/cloak.png';
-var countdown = 4;
+laddersheet.src = 'res/ladder.png';
+var countdown = 5;
 function start(){
   countdown--;
   if(countdown <= 0){
@@ -69,6 +83,8 @@ function start(){
       collision.add(blocks[i]);
     }
     stage.add(collision);
+    ladders.add(ladder);
+    stage.add(ladders);
     playerLayer.add(spy);
     playerLayer.add(cloak);
     stage.add(playerLayer);

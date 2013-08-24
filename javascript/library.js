@@ -16,10 +16,19 @@ function collideRight(){
 	else
 		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
 }
-function collide(x,y){
-	var temp = collision.getChildren();
+function tryLadder(){
+	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()/2,spy.getY()+32, ladders.getChildren());
+}
+function collide(x,y,children){
+	if(!children){
+		var temp = collision.getChildren();
+		if(env.fall){
+			return false;
+		}
+	}else
+		var temp = children
 	for(var i = 0; i < temp.length; i++){
-		if(testCollision(temp[i],x,y))
+		if(!temp[i].length && testCollision(temp[i],x,y))
 			return true;
 	}
 	return false;
@@ -66,6 +75,8 @@ var env = {
 	goingLeft: false,
 	goingRight: false,
 	jumped: false,
+	climb: false,
+	fall: false,
 	cloaked: 0
 };
 var velocityX = 0, velocityY = 0;
@@ -76,6 +87,8 @@ function loop(){
 			spy.setAnimation('jump_stay')
 		}
 		velocityY = (collideHead())?1:velocityY;
+		if(keys[up])
+			bindingsDown[up]();
 		constants.jumped=true;
 	}else{
 		if(constants.goingRight){
@@ -94,6 +107,29 @@ function loop(){
 		}
 		velocityY = 0;
 	}
+	if(tryLadder()){
+		if(!onGround()){
+			velocityY=0;
+			if(constants.goingRight){
+				velocityX = constants.walkSpeed/3;
+				env.cloaked = 0;
+			}else if(constants.goingLeft){
+				velocityX = -constants.walkSpeed/3;
+				env.cloaked = 0;
+			}else{
+				velocityX = 0;
+				env.cloaked++
+			}
+		}
+		if(env.climb){
+			velocityY = -5;
+			env.cloaked = 0;
+		}
+		if(env.fall){
+			velocityY = 5;
+			env.cloaked = 0;
+		}
+	}
 	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);
 	player.setX(spy.getX()+velocityX);
@@ -107,7 +143,12 @@ function startPlayer(){
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
+				ladders.getChildren().each(function (node,n){
+					node.setX(node.getX()+back);
+				});
+
 				collision.draw();
+				ladders.draw();
 			}else{
 				spy.setX(x);
 				cloak.setX(x);
