@@ -2,7 +2,7 @@ function onGround(){
 	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY()+64)||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY()+64);
 }
 function collide(x,y){
-	var temp = ground.getChildren();
+	var temp = collision.getChildren();
 	for(var i = 0; i < temp.length; i++){
 		if(testCollision(temp[i],x,y))
 			return true;
@@ -16,6 +16,32 @@ function testCollision(object, x, y){
 			return false;	
 	return true;
 }
+function land(){
+	var temp = (velocityY > 0)?1:-1;
+	for(var i = 0; i < velocityY * temp; i++){
+		player.setY(spy.getY()-temp);
+		if(!onGround()){
+			break;
+		}
+	}
+	player.setY(spy.getY()+temp);
+	velocityX = 0;
+	velocityY = 0;
+
+	spy.setAnimation('idle');
+	if(keys[left]||keys[right]){
+		if(keys[left]){
+			bindingsDown[left]();
+			return;
+		}
+		if(keys[right]){
+			bindingsDown[right]();
+			return;
+		}
+	}
+	constants.goingRight = false;
+	constants.goingLeft = false;
+}
 var constants = {
 	gravity: .9,
 	walkSpeed: 5,
@@ -26,8 +52,31 @@ var env = {
 	goingRight: false,
 	jumped: false
 };
-
-
+var velocityX = 0, velocityY = 0;
+function loop(){
+	if(!onGround()){
+		velocityY += constants.gravity;
+		if(spy.getAnimation() == 'run' ){
+			spy.setAnimation('jump_stay')
+		}
+		constants.jumped=true;
+	}else{
+		if(constants.goingRight){
+			velocityX = constants.walkSpeed;
+		}else if(constants.goingLeft){
+			velocityX = -constants.walkSpeed;
+		}else{
+			velocityX = 0;
+		}
+		if(constants.jumped){
+			land();
+			constants.jumped = false;
+		}
+		velocityY = 0;
+	}
+	player.setY(spy.getY()+velocityY);
+	player.setX(spy.getX()+velocityX);
+}
 function startPlayer(){
 	player = {
 		setX: function (x){

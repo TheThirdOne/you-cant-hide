@@ -7,7 +7,7 @@ var stage = new Kinetic.Stage({
 
 var playerLayer = new Kinetic.Layer();
 var enemies = new Kinetic.Layer();
-var collide = new Kinetic.Layer();
+var collision = new Kinetic.Layer();
 var hud = new Kinetic.Layer();
 
 var gunsheet = new Image();
@@ -23,8 +23,17 @@ spysheet.onload = function() {
     index: 0,
     width: 64
   });
-  playerLayer.add(spy);
-  stage.add(playerLayer);
-  spy.start();
+  start();
 };
 spysheet.src = 'res/spy.png';
+var countdown = 1;
+function start(){
+  countdown--;
+  if(countdown <= 0){
+    playerLayer.add(spy);
+    stage.add(playerLayer);
+    startPlayer();
+    spy.start();
+    window.setInterval(loop,constants.playloop);
+  }
+}
