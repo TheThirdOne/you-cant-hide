@@ -1,6 +1,18 @@
 function onGround(){
 	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY()+64)||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY()+64);
 }
+function collideLeft(){
+	if(spy.getScaleX() > 0)
+		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
+	else
+		return collide(spy.getX() - spy.getWidth(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX() - spy.getWidth(),spy.getY()+spy.getHeight()*.2);
+}
+function collideRight(){
+	if(spy.getScaleX() > 0)
+		return collide(spy.getX() + spy.getWidth(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX() + spy.getWidth(),spy.getY()+spy.getHeight()*.2);
+	else
+		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
+}
 function collide(x,y){
 	var temp = collision.getChildren();
 	for(var i = 0; i < temp.length; i++){
@@ -74,6 +86,7 @@ function loop(){
 		}
 		velocityY = 0;
 	}
+	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);
 	player.setX(spy.getX()+velocityX);
 }
