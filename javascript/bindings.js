@@ -16,8 +16,10 @@ document.onkeyup = function(evt){
 };
 bindingsDown[attack] = function(){
 	stab();
+	env.cloaked = 0;
 }
 bindingsDown[up] = function(){
+  env.cloaked = 0;
   if(onGround(spy) && !tryLadder(spy)){
     console.log('jump');
     spy.setAnimation('jump');
@@ -35,6 +37,7 @@ bindingsDown[down] = function(){
   if(tryLadder(spy)){
     env.fall = true;
   }
+  env.cloaked = 0;
 };
 bindingsUp[down] = function(){
   env.fall = false;
@@ -49,6 +52,7 @@ bindingsDown[right] = function(){
     constants.goingRight = true;
     constants.goingLeft = false;
   }
+  env.cloaked = 0;
 };
 bindingsUp[right] = function(){
   if((onGround(spy) || tryLadder(spy))&& constants.goingRight){
@@ -64,6 +68,7 @@ bindingsDown[left] = function(){
     constants.goingLeft = true;
     constants.goingRight = false;
   }
+  env.cloaked = 0;
 };
 bindingsUp[left] = function(){
   if((onGround(spy) || tryLadder(spy))&& constants.goingLeft){

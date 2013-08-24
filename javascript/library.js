@@ -34,7 +34,7 @@ function collide(x,y,children){
 	}else
 		var temp = children
 	for(var i = 0; i < temp.length; i++){
-		if(!temp[i].length && testCollision(temp[i],x,y))
+		if(testCollision(temp[i],x,y))
 			return true;
 	}
 	return false;
@@ -47,12 +47,13 @@ function testCollision(object, x, y){
 	return true;
 }
 function stab(){
-	var x = spy.getX() + spy.getWidth()*spy.getScaleX()*1.1;
+	var x = spy.getX() + spy.getWidth()*spy.getScaleX()*1.5;
 	var y = spy.getY()+64*.2;
+	var x2 = spy.getX() + spy.getWidth()*spy.getScaleX();
 	var temp = enemies.getChildren();
 	var killed;
 	for(var i = 0; i < temp.length; i++){
-		if(!temp[i].length && testCollision(temp[i],x,y)){
+		if(testCollision(temp[i],x,y) || testCollision(temp[i],x2,y)){
 			killed = temp[i];
 			break;
 		}
@@ -60,7 +61,7 @@ function stab(){
 	if(!killed)
 		return;
 	for(var i = 0; i < thugs.length; i++){
-		if(killed==thugs[i].sprite)
+		if(killed==thugs[i].sprite && thugs[i].decay > 65)
 			thugs[i].die();
 	}
 }
@@ -136,10 +137,10 @@ function loop(){
 		if(!onGround(spy)){
 			velocityY=0;
 			if(constants.goingRight){
-				velocityX = constants.walkSpeed/3;
+				velocityX = constants.walkSpeed;
 				env.cloaked = 0;
 			}else if(constants.goingLeft){
-				velocityX = -constants.walkSpeed/3;
+				velocityX = -constants.walkSpeed;
 				env.cloaked = 0;
 			}else{
 				velocityX = 0;
@@ -183,7 +184,7 @@ function runEnemy(val, ind, arr){
 		}
 		thug.velocityY = 0;
 	}
-	if(thug.decay==166){
+	if(thug.decay==66){
 		if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
 			thug.velocityX *= -1;
 			thug.setDirection(-1 * thug.sprite.getScaleX());
@@ -193,7 +194,7 @@ function runEnemy(val, ind, arr){
 		if(onGround(thug.sprite)){
 			thug.velocityX = 0;
 		}
-		thug.sprite.setOpacity(thug.decay/166);
+		thug.sprite.setOpacity(thug.decay/66);
 		if(thug.decay < 0){
 			thug.sprite.destroy();
 			arr.splice(ind,1)
@@ -260,7 +261,7 @@ function BadGuy(x,y,image){
 	this.velocityX = 5/3;
 	this.velocityY = 0;
 	this.air = false;
-	this.decay = 166;
+	this.decay = 66;
 	this.die = function(){
 		this.decay--;
 		this.sprite.setAnimation('death');
