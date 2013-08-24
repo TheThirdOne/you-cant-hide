@@ -31,7 +31,7 @@ spysheet.onload = function() {
   });
   playerLayer.add(spy);
   stage.add(playerLayer);
-  skeleton.start();
+  spy.start();
 };
 spysheet.src = 'res/spy.png';
 
