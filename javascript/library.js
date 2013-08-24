@@ -40,10 +40,15 @@ function collide(x,y,children){
 	return false;
 }
 function testCollision(object, x, y){
-	if(object.getX() > x || object.getX() + object.getWidth() < x)
-			return false;
 	if(object.getY() > y || object.getY() + object.getHeight() < y)
-			return false;	
+		return false;	
+	if(object.getScaleX() > 0){
+		if(object.getX() > x || object.getX() + object.getWidth() < x)
+				return false;
+	}else{
+		if(object.getX() < x || object.getX() + object.getWidth() > x)
+				return false;
+	}
 	return true;
 }
 function stab(){
@@ -222,23 +227,27 @@ function startPlayer(){
 				ladders.draw();
 			}else{
 				spy.setX(x);
+				knife.setX(x);
 				cloak.setX(x);
 			}
 		},
 		setY: function (y){
 			spy.setY(y);
+			knife.setY(y);
 			cloak.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
 				if(spy.getScaleX() < 0){
 		      		spy.setScaleX(1);
+		      		knife.setScaleX(1);
 		      		cloak.setScaleX(1);
 		     		player.setX(spy.getX()-spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
+			      knife.setScaleX(-1);
 			      cloak.setScaleX(-1);
 			      player.setX(spy.getX()+spy.getWidth()/2);
 			    }

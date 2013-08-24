@@ -17,6 +17,10 @@ document.onkeyup = function(evt){
 bindingsDown[attack] = function(){
 	stab();
 	env.cloaked = 0;
+	knife.setAnimation('stab');
+	knife.afterFrame(1, function(){
+		knife.setAnimation('idle');
+	});
 }
 bindingsDown[up] = function(){
   env.cloaked = 0;

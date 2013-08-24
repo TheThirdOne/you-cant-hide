@@ -6,7 +6,12 @@ var person = {
          {name: 'death', slides:[8,8,9,9,10,10]},
          {name: 'death_stay', slides:[10]}],
          columns:4,rows:4,width:32,height:64};
+var knife = {
+  anims:[{name: 'idle', slides:[3]},
+         {name: 'stab', slides:[0,1,2]}],
+         columns:4,rows:1,width:32,height:64};
 var personanimation = AnimationSet(person);
+var knifeanimation = AnimationSet(knife);
 
 function AnimationSet(data){
   var out = {};
