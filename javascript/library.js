@@ -19,7 +19,7 @@ function collideRight(){
 function collide(x,y){
 	var temp = collision.getChildren();
 	for(var i = 0; i < temp.length; i++){
-		if(testCollision(temp[i],x,y))
+		if(!temp[i].length && testCollision(temp[i],x,y))
 			return true;
 	}
 	return false;
@@ -107,7 +107,12 @@ function startPlayer(){
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
+				ladders.getChildren().each(function (node,n){
+					node.setX(node.getX()+back);
+				});
+
 				collision.draw();
+				ladders.draw();
 			}else{
 				spy.setX(x);
 				cloak.setX(x);
