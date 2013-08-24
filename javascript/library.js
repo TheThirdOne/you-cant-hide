@@ -85,6 +85,7 @@ function startPlayer(){
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
+				collision.draw();
 			}else{
 				spy.setX(x);
 			}

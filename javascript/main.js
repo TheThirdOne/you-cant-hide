@@ -13,24 +13,13 @@ var hud = new Kinetic.Layer();
 
 var blocksheet = new Image();
 blocksheet.onload = function(){
-   block = new Kinetic.Sprite({
-    x: 0,
-    y:364,
-    image: blocksheet,
-    animation: 'idle',
-    animations: {idle: [{
-                    x: 0,
-                    y: 0,
-                    width: 64,
-                    height: 64
-                  }]
-                },
-    frameRate: 12,
-    width: 640,
-    height: 96,
-    scaleX: 10,
-    scaleY: 1.5
-  });
+  block = new Kinetic.Rect({
+        x: 0,
+        y: 364,
+        width: 640,
+        height: 96,
+        fillPatternImage: blocksheet
+      });
   start();
 }
 
@@ -55,7 +44,6 @@ function start(){
   countdown--;
   if(countdown <= 0){
     collision.add(block);
-    block.start();
     stage.add(collision);
     playerLayer.add(spy);
     stage.add(playerLayer);
