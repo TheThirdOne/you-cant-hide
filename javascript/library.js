@@ -16,8 +16,14 @@ function collideRight(){
 	else
 		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
 }
-function collide(x,y){
-	var temp = collision.getChildren();
+function tryLadder(){
+	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()/2,spy.getY()+32, ladders.getChildren());
+}
+function collide(x,y,children){
+	if(!children)
+		var temp = collision.getChildren();
+	else
+		var temp = children
 	for(var i = 0; i < temp.length; i++){
 		if(!temp[i].length && testCollision(temp[i],x,y))
 			return true;
@@ -66,6 +72,7 @@ var env = {
 	goingLeft: false,
 	goingRight: false,
 	jumped: false,
+	climb: false,
 	cloaked: 0
 };
 var velocityX = 0, velocityY = 0;
@@ -76,6 +83,8 @@ function loop(){
 			spy.setAnimation('jump_stay')
 		}
 		velocityY = (collideHead())?1:velocityY;
+		if(keys[up])
+			bindingsDown[up]();
 		constants.jumped=true;
 	}else{
 		if(constants.goingRight){
@@ -93,6 +102,17 @@ function loop(){
 			constants.jumped = false;
 		}
 		velocityY = 0;
+	}
+	if(env.climb && tryLadder()){
+		velocityY = -5;
+		if(constants.goingRight){
+			velocityX = constants.walkSpeed/3;
+		}else if(constants.goingLeft){
+			velocityX = -constants.walkSpeed/3;
+		}else{
+			velocityX = 0;
+		}
+		env.cloaked = 0;
 	}
 	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);
