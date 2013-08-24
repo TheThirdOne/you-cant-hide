@@ -1,5 +1,6 @@
 var spy;
 var block;
+var blockb;
 var stage = new Kinetic.Stage({
   container: 'container',
   width: 1000,
@@ -20,6 +21,13 @@ blocksheet.onload = function(){
         height: 96,
         fillPatternImage: blocksheet
       });
+  blockb = new Kinetic.Rect({
+        x: 0,
+        y: 300,
+        width: 64,
+        height: 96,
+        fillPatternImage: blocksheet
+      });
   start();
 }
 
@@ -33,7 +41,8 @@ spysheet.onload = function() {
     animations: personanimation,
     frameRate: 8,
     index: 0,
-    width: 64
+    width: 32,
+    height:64
   });
   start();
 };
@@ -44,6 +53,7 @@ function start(){
   countdown--;
   if(countdown <= 0){
     collision.add(block);
+    collision.add(blockb);
     stage.add(collision);
     playerLayer.add(spy);
     stage.add(playerLayer);
