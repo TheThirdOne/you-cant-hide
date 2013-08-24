@@ -16,7 +16,7 @@ document.onkeyup = function(evt){
 };
 
 bindingsDown[up] = function(){
-  if(onGround() && !tryLadder()){
+  if(onGround(spy) && !tryLadder(spy)){
     console.log('jump');
     spy.setAnimation('jump');
     velocityY -= 10;
@@ -25,12 +25,12 @@ bindingsDown[up] = function(){
     spy.afterFrame(1, function() {
       spy.setAnimation('jump_stay');
     });
-  }else if (tryLadder()){
+  }else if (tryLadder(spy)){
   	env.climb = true;
   }
 };
 bindingsDown[down] = function(){
-  if(tryLadder()){
+  if(tryLadder(spy)){
     env.fall = true;
   }
 };
@@ -42,14 +42,14 @@ bindingsUp[up] = function(){
 }
 bindingsDown[right] = function(){
   player.setDirection(1);
-  if(onGround() || tryLadder()){
+  if(onGround(spy) || tryLadder(spy)){
     spy.setAnimation('walk');
     constants.goingRight = true;
     constants.goingLeft = false;
   }
 };
 bindingsUp[right] = function(){
-  if((onGround()|| tryLadder())&& constants.goingRight){
+  if((onGround(spy) || tryLadder(spy))&& constants.goingRight){
     spy.setAnimation('idle');
     velocityX = 0;
     constants.goingRight = false;
@@ -57,14 +57,14 @@ bindingsUp[right] = function(){
 }
 bindingsDown[left] = function(){
   player.setDirection(-1);
-  if(onGround() || tryLadder()){
+  if(onGround(spy) || tryLadder(spy)){
     spy.setAnimation('walk');
     constants.goingLeft = true;
     constants.goingRight = false;
   }
 };
 bindingsUp[left] = function(){
-  if((onGround() || tryLadder())&& constants.goingLeft){
+  if((onGround(spy) || tryLadder(spy))&& constants.goingLeft){
     spy.setAnimation('idle');
     velocityX = 0;
     constants.goingLeft = false;
