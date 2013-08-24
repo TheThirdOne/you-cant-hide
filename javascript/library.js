@@ -147,15 +147,32 @@ function loop(){
 }
 function runEnemy(val, ind, arr){
 	var thug = val;
-	thug.sprite.setX(thug.sprite.getX()+1);
+	//thug.velocityX = 5/3;
 	if(!onGround(thug.sprite)){
-		console.log(thug.velocityY);
 		thug.velocityY += constants.gravity;
 		thug.velocityY = (collideHead(thug.sprite))?1:thug.velocityY;
+		thug.air = true;
 	}else{
+		if(thug.air){
+			var temp = (thug.velocityY > 0)?1:-1;
+			for(var i = 0; i < thug.velocityY * temp; i++){
+				thug.sprite.setY(thug.sprite.getY()-temp);
+				if(!onGround(thug.sprite)){
+					break;
+				}
+			}
+			thug.sprite.setY(thug.sprite.getY()+temp);
+			thug.air = false;
+		}
 		thug.velocityY = 0;
 	}
+	if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
+		thug.velocityX *= -1;
+		thug.setDirection(-1 * thug.sprite.getScaleX());
+	}
+	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
 	thug.sprite.setY(thug.sprite.getY()+thug.velocityY);
+	thug.sprite.setX(thug.sprite.getX()+thug.velocityX);
 }
 function startPlayer(){
 	player = {
@@ -204,15 +221,29 @@ function BadGuy(x,y,image){
 	    x: 400,
 	    y: 100,
 	    image: image,
-	    animation: 'idle',
+	    animation: 'walk',
 	    animations: personanimation,
 	    frameRate: 8,
 	    index: 0,
 	    width: 32,
 	    height:64
 	  });
-	this.velocityX = 0;
+	this.velocityX = 5/3;
 	this.velocityY = 0;
+	this.air = false;
+	this.setDirection = function(direction){
+		if(direction > 0){
+			if(this.sprite.getScaleX() < 0){
+	      		this.sprite.setScaleX(1);
+	     		this.sprite.setX(this.sprite.getX() - this.sprite.getWidth()/2);
+	    	}
+	    }else{
+	    	if(spy.getScaleX() > 0){
+		      this.sprite.setScaleX(-1);
+		      this.sprite.setX(this.sprite.getX() + this.sprite.getWidth()/2);
+		    }
+	    }
+	}
 }
 function generateCollisions(level){
 	var out = [];
