@@ -63,7 +63,7 @@ knifesheet.onload = function() {
     x: 400,
     y: 100,
     image: knifesheet,
-    animation: 'idle',
+    animation: 'stab',
     animations: knifeanimation,
     frameRate: 4,
     index: 0,

@@ -46,7 +46,7 @@ function testCollision(object, x, y){
 		if(object.getX() > x || object.getX() + object.getWidth() < x)
 				return false;
 	}else{
-		if(object.getX() < x || object.getX() + object.getWidth() > x)
+		if(object.getX() < x || object.getX() - object.getWidth() > x)
 				return false;
 	}
 	return true;
