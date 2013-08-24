@@ -1,6 +1,6 @@
 var keys = [];
 var bindingsDown = [], bindingsUp = [];
-var down = 83, left = 65, right = 68, up=87;
+var down = 83, left = 65, right = 68, up=87, attack=32;
 document.onkeydown = function(evt){
   if(!keys[evt.keyCode] ){
     keys[evt.keyCode] = true;
@@ -14,7 +14,9 @@ document.onkeyup = function(evt){
   if(bindingsUp[evt.keyCode])
       bindingsUp[evt.keyCode]();
 };
-
+bindingsDown[attack] = function(){
+	stab();
+}
 bindingsDown[up] = function(){
   if(onGround(spy) && !tryLadder(spy)){
     console.log('jump');

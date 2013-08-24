@@ -46,6 +46,24 @@ function testCollision(object, x, y){
 			return false;	
 	return true;
 }
+function stab(){
+	var x = spy.getX() + spy.getWidth()*spy.getScaleX()*1.1;
+	var y = spy.getY()+64*.2;
+	var temp = enemies.getChildren();
+	var killed;
+	for(var i = 0; i < temp.length; i++){
+		if(!temp[i].length && testCollision(temp[i],x,y)){
+			killed = temp[i];
+			break;
+		}
+	}
+	if(!killed)
+		return;
+	for(var i = 0; i < thugs.length; i++){
+		if(killed==thugs[i].sprite)
+			thugs[i].die();
+	}
+}
 function land(){
 	var temp = (velocityY > 0)?1:-1;
 	for(var i = 0; i < velocityY * temp; i++){
