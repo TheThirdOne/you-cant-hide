@@ -18,7 +18,7 @@ bindingsDown[attack] = function(){
 	stab();
 	env.cloaked = 0;
 	knife.setAnimation('stab');
-	knife.afterFrame(1, function(){
+	knife.afterFrame(2, function(){
 		knife.setAnimation('idle');
 	});
 }

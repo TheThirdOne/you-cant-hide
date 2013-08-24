@@ -63,9 +63,9 @@ knifesheet.onload = function() {
     x: 400,
     y: 100,
     image: knifesheet,
-    animation: 'stab',
+    animation: 'idle',
     animations: knifeanimation,
-    frameRate: 4,
+    frameRate: 8,
     index: 0,
     width: 32,
     height:64
@@ -115,6 +115,7 @@ function start(){
     stage.add(playerLayer);
     startPlayer();
     spy.start();
+    knife.start();
     for(var i = 0; i < thugs.length;i++){
       enemies.add(thugs[i].sprite);
     }
