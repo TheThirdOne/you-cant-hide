@@ -1,5 +1,5 @@
-var spy;
-var block, blockb, blockc, back;
+var spy, cloak;
+var back;
 var blocks;
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -44,10 +44,22 @@ spysheet.onload = function() {
   });
   start();
 };
+var cloaksheet = new Image();
+cloaksheet.onload = function(){
+  cloak = new Kinetic.Rect({
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 64,
+        fillPatternImage: cloaksheet
+      });
+  start();
+}
 spysheet.src = 'res/spy.png';
 blocksheet.src = 'res/ground.png';
-concretesheet.src = 'res/concrete.png'
-var countdown = 3;
+concretesheet.src = 'res/concrete.png';
+cloaksheet.src = 'res/cloak.png';
+var countdown = 4;
 function start(){
   countdown--;
   if(countdown <= 0){
@@ -58,6 +70,7 @@ function start(){
     }
     stage.add(collision);
     playerLayer.add(spy);
+    playerLayer.add(cloak);
     stage.add(playerLayer);
     startPlayer();
     spy.start();
