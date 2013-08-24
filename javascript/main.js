@@ -1,5 +1,6 @@
 var spy;
 var block, blockb, blockc, back;
+var blocks;
 var stage = new Kinetic.Stage({
   container: 'container',
   width: 1000,
@@ -24,27 +25,7 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  block = new Kinetic.Rect({
-        x: 0,
-        y: 364,
-        width: 640,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
-  blockb = new Kinetic.Rect({
-        x: 0,
-        y: 300,
-        width: 64,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
-  blockc = new Kinetic.Rect({
-        x: 600,
-        y: 300,
-        width: 64,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[600,300,64,96]]});
   start();
 }
 
@@ -72,9 +53,9 @@ function start(){
   if(countdown <= 0){
     background.add(back);
     stage.add(background);
-    collision.add(block);
-    collision.add(blockb);
-    collision.add(blockc);
+    for(var i = 0; i < blocks.length; i++){
+      collision.add(blocks[i]);
+    }
     stage.add(collision);
     playerLayer.add(spy);
     stage.add(playerLayer);

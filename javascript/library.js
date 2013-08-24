@@ -121,3 +121,10 @@ function startPlayer(){
 		}
 	};
 }
+function generateCollisions(level){
+	var out = [];
+	for(var i = 0; i < level.blocks.length; i++){
+		out[i]= new Kinetic.Rect({x: level.blocks[i][0],y: level.blocks[i][1],width: level.blocks[i][2],height: level.blocks[i][3],fillPatternImage: level.image});
+	}
+	return out;
+}
