@@ -91,7 +91,6 @@ function startPlayer(){
 		},
 		setY: function (y){
 			spy.setY(y);
-			gun.setY(y+25 + ((constants.pointdown)?-8:0) + ((constants.pointup)?8:0));
 		},
 		setDirection: function(direction){
 			if(direction > 0){
