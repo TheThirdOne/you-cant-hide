@@ -1,23 +1,29 @@
-function onGround(){
-	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY()+64)||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY()+64);
+function onGround(sprite){
+	return collide(sprite.getX() + sprite.getWidth()*sprite.getScaleX()*.2,sprite.getY()+64)||
+	       collide(sprite.getX() + sprite.getWidth()*sprite.getScaleX()*.8,sprite.getY()+64);
 }
-function collideHead(){
-	return  collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.2,spy.getY())||collide(spy.getX() + spy.getWidth()*spy.getScaleX()*.8,spy.getY());
+function collideHead(sprite){
+	return  collide(sprite.getX() + sprite.getWidth()*sprite.getScaleX()*.2,sprite.getY())||
+	        collide(sprite.getX() + sprite.getWidth()*sprite.getScaleX()*.8,sprite.getY());
 }
-function collideLeft(){
-	if(spy.getScaleX() > 0)
-		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
+function collideLeft(sprite){
+	if(sprite.getScaleX() > 0)
+		return collide(sprite.getX(),sprite.getY()+sprite.getHeight()*.8)||
+	           collide(sprite.getX(),sprite.getY()+sprite.getHeight()*.2);
 	else
-		return collide(spy.getX() - spy.getWidth(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX() - spy.getWidth(),spy.getY()+spy.getHeight()*.2);
+		return collide(sprite.getX() - sprite.getWidth(),sprite.getY()+sprite.getHeight()*.8)||
+	           collide(sprite.getX() - sprite.getWidth(),sprite.getY()+sprite.getHeight()*.2);
 }
-function collideRight(){
-	if(spy.getScaleX() > 0)
-		return collide(spy.getX() + spy.getWidth(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX() + spy.getWidth(),spy.getY()+spy.getHeight()*.2);
+function collideRight(sprite){
+	if(sprite.getScaleX() > 0)
+		return collide(sprite.getX() + sprite.getWidth(),sprite.getY()+sprite.getHeight()*.8)||
+	           collide(sprite.getX() + sprite.getWidth(),sprite.getY()+sprite.getHeight()*.2);
 	else
-		return collide(spy.getX(),spy.getY()+spy.getHeight()*.8)||collide(spy.getX(),spy.getY()+spy.getHeight()*.2);
+		return collide(sprite.getX(),sprite.getY()+sprite.getHeight()*.8)||
+	           collide(sprite.getX(),sprite.getY()+sprite.getHeight()*.2);
 }
-function tryLadder(){
-	return collide(spy.getX() + spy.getWidth()*spy.getScaleX()/2,spy.getY()+32, ladders.getChildren());
+function tryLadder(sprite){
+	return collide(sprite.getX() + sprite.getWidth()*sprite.getScaleX()/2,sprite.getY()+32, ladders.getChildren());
 }
 function collide(x,y,children){
 	if(!children){
@@ -44,7 +50,7 @@ function land(){
 	var temp = (velocityY > 0)?1:-1;
 	for(var i = 0; i < velocityY * temp; i++){
 		player.setY(spy.getY()-temp);
-		if(!onGround()){
+		if(!onGround(spy)){
 			break;
 		}
 	}
@@ -82,12 +88,12 @@ var env = {
 var velocityX = 0, velocityY = 0;
 function loop(){
 	thugs.forEach(runEnemy);
-	if(!onGround()){
+	if(!onGround(spy)){
 		velocityY += constants.gravity;
 		if(spy.getAnimation() == 'walk' ){
 			spy.setAnimation('jump_stay')
 		}
-		velocityY = (collideHead())?1:velocityY;
+		velocityY = (collideHead(spy))?1:velocityY;
 		if(keys[up])
 			bindingsDown[up]();
 		constants.jumped=true;
@@ -108,8 +114,8 @@ function loop(){
 		}
 		velocityY = 0;
 	}
-	if(tryLadder()){
-		if(!onGround()){
+	if(tryLadder(spy)){
+		if(!onGround(spy)){
 			velocityY=0;
 			if(constants.goingRight){
 				velocityX = constants.walkSpeed/3;
@@ -134,14 +140,13 @@ function loop(){
 		env.fall = false;
 		env.climb = false;
 	}
-	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
+	velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
 	player.setY(spy.getY()+velocityY);
 	player.setX(spy.getX()+velocityX);
 	cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
 }
 function runEnemy(val, ind, arr){
 	var thug = val;
-	console.log('thug');
 	thug.sprite.setX(thug.sprite.getX()+1);
 }
 function startPlayer(){
