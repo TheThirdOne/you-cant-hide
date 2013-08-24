@@ -74,7 +74,7 @@ function loop(){
 		if(spy.getAnimation() == 'walk' ){
 			spy.setAnimation('jump_stay')
 		}
-		velocityY = (collideHead())?0:velocityY;
+		velocityY = (collideHead())?1:velocityY;
 		constants.jumped=true;
 	}else{
 		if(constants.goingRight){
