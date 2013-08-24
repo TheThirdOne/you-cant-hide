@@ -1,39 +1,31 @@
 var spy;
-var block, blockb, blockc;
+var block, blockb, blockc, back;
+var blocks;
 var stage = new Kinetic.Stage({
   container: 'container',
   width: 1000,
   height: 400
 });
-
+var background = new Kinetic.Layer();
 var playerLayer = new Kinetic.Layer();
 var enemies = new Kinetic.Layer();
 var collision = new Kinetic.Layer();
 var hud = new Kinetic.Layer();
 
+var concretesheet = new Image();
+concretesheet.onload = function(){
+  back = new Kinetic.Rect({
+        x: 0,
+        y: 0,
+        width: 1000,
+        height: 400,
+        fillPatternImage: concretesheet
+      });
+  start();
+}
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  block = new Kinetic.Rect({
-        x: 0,
-        y: 364,
-        width: 640,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
-  blockb = new Kinetic.Rect({
-        x: 0,
-        y: 300,
-        width: 64,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
-  blockc = new Kinetic.Rect({
-        x: 600,
-        y: 300,
-        width: 64,
-        height: 96,
-        fillPatternImage: blocksheet
-      });
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[600,300,64,96]]});
   start();
 }
 
@@ -54,13 +46,16 @@ spysheet.onload = function() {
 };
 spysheet.src = 'res/spy.png';
 blocksheet.src = 'res/ground.png';
-var countdown = 2;
+concretesheet.src = 'res/concrete.png'
+var countdown = 3;
 function start(){
   countdown--;
   if(countdown <= 0){
-    collision.add(block);
-    collision.add(blockb);
-    collision.add(blockc);
+    background.add(back);
+    stage.add(background);
+    for(var i = 0; i < blocks.length; i++){
+      collision.add(blocks[i]);
+    }
     stage.add(collision);
     playerLayer.add(spy);
     stage.add(playerLayer);
