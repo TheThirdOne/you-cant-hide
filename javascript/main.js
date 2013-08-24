@@ -17,14 +17,8 @@ spysheet.onload = function() {
     x: 400,
     y: 100,
     image: spysheet,
-    animation: 'idle',
-    animations: {idle: [{
-                    x: 0,
-                    y: 64,
-                    width: 32,
-                    height: 64
-                  }]
-                },
+    animation: 'walk',
+    animations: personanimation,
     frameRate: 8,
     index: 0,
     width: 64
@@ -34,4 +28,3 @@ spysheet.onload = function() {
   spy.start();
 };
 spysheet.src = 'res/spy.png';
-
