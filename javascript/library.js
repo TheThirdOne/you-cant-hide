@@ -65,7 +65,8 @@ var constants = {
 var env = {
 	goingLeft: false,
 	goingRight: false,
-	jumped: false
+	jumped: false,
+	cloaked: 0
 };
 var velocityX = 0, velocityY = 0;
 function loop(){
@@ -79,10 +80,13 @@ function loop(){
 	}else{
 		if(constants.goingRight){
 			velocityX = constants.walkSpeed;
+			env.cloaked = 0;
 		}else if(constants.goingLeft){
 			velocityX = -constants.walkSpeed;
+			env.cloaked = 0;
 		}else{
 			velocityX = 0;
+			env.cloaked++;
 		}
 		if(constants.jumped){
 			land();
@@ -93,6 +97,7 @@ function loop(){
 	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);
 	player.setX(spy.getX()+velocityX);
+	cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
 }
 function startPlayer(){
 	player = {
@@ -105,20 +110,24 @@ function startPlayer(){
 				collision.draw();
 			}else{
 				spy.setX(x);
+				cloak.setX(x);
 			}
 		},
 		setY: function (y){
 			spy.setY(y);
+			cloak.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
 				if(spy.getScaleX() < 0){
 		      		spy.setScaleX(1);
+		      		cloak.setScaleX(1);
 		     		player.setX(spy.getX()-spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
+			      cloak.setScaleX(-1);
 			      player.setX(spy.getX()+spy.getWidth()/2);
 			    }
 		    }
