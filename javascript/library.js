@@ -178,6 +178,7 @@ function runEnemy(val, ind, arr){
 		thug.sprite.setOpacity(thug.decay/166);
 		if(thug.decay < 0){
 			thug.sprite.destroy();
+			arr.splice(ind,1)
 		}
 	}
 	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
