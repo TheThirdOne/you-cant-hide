@@ -81,6 +81,7 @@ var env = {
 };
 var velocityX = 0, velocityY = 0;
 function loop(){
+	thugs.forEach(runEnemy);
 	if(!onGround()){
 		velocityY += constants.gravity;
 		if(spy.getAnimation() == 'walk' ){
@@ -129,11 +130,19 @@ function loop(){
 			velocityY = 5;
 			env.cloaked = 0;
 		}
+	}else{
+		env.fall = false;
+		env.climb = false;
 	}
 	velocityX = (velocityX < 0 && collideLeft() || velocityX > 0 && collideRight())?0:velocityX;
 	player.setY(spy.getY()+velocityY);
 	player.setX(spy.getX()+velocityX);
 	cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
+}
+function runEnemy(val, ind, arr){
+	var thug = val;
+	console.log('thug');
+	thug.sprite.setX(thug.sprite.getX()+1);
 }
 function startPlayer(){
 	player = {
@@ -146,7 +155,9 @@ function startPlayer(){
 				ladders.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
-
+				enemies.getChildren().each(function (node,n){
+					node.setX(node.getX()+back);
+				});
 				collision.draw();
 				ladders.draw();
 			}else{
@@ -174,6 +185,19 @@ function startPlayer(){
 		    }
 		}
 	};
+}
+function BadGuy(x,y,image){
+	this.sprite= new Kinetic.Sprite({
+	    x: 400,
+	    y: 100,
+	    image: image,
+	    animation: 'idle',
+	    animations: personanimation,
+	    frameRate: 8,
+	    index: 0,
+	    width: 32,
+	    height:64
+	  });
 }
 function generateCollisions(level){
 	var out = [];
