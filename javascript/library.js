@@ -56,7 +56,7 @@ var velocityX = 0, velocityY = 0;
 function loop(){
 	if(!onGround()){
 		velocityY += constants.gravity;
-		if(spy.getAnimation() == 'run' ){
+		if(spy.getAnimation() == 'walk' ){
 			spy.setAnimation('jump_stay')
 		}
 		constants.jumped=true;
@@ -82,7 +82,7 @@ function startPlayer(){
 		setX: function (x){
 			if(x > stage.getWidth() * .7 || x < stage.getWidth() * .3 ){
 				var back = spy.getX()-x;
-				ground.getChildren().each(function (node,n){
+				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
 			}else{
@@ -101,7 +101,6 @@ function startPlayer(){
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
-			      gun.setScaleX(-.75);
 			      player.setX(spy.getX()+spy.getWidth()/2);
 			    }
 		    }
