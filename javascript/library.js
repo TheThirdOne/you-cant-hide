@@ -46,6 +46,24 @@ function testCollision(object, x, y){
 			return false;	
 	return true;
 }
+function stab(){
+	var x = spy.getX() + spy.getWidth()*spy.getScaleX()*1.1;
+	var y = spy.getY()+64*.2;
+	var temp = enemies.getChildren();
+	var killed;
+	for(var i = 0; i < temp.length; i++){
+		if(!temp[i].length && testCollision(temp[i],x,y)){
+			killed = temp[i];
+			break;
+		}
+	}
+	if(!killed)
+		return;
+	for(var i = 0; i < thugs.length; i++){
+		if(killed==thugs[i].sprite)
+			thugs[i].die();
+	}
+}
 function land(){
 	var temp = (velocityY > 0)?1:-1;
 	for(var i = 0; i < velocityY * temp; i++){
@@ -147,7 +165,6 @@ function loop(){
 }
 function runEnemy(val, ind, arr){
 	var thug = val;
-	//thug.velocityX = 5/3;
 	if(!onGround(thug.sprite)){
 		thug.velocityY += constants.gravity;
 		thug.velocityY = (collideHead(thug.sprite))?1:thug.velocityY;
@@ -166,9 +183,21 @@ function runEnemy(val, ind, arr){
 		}
 		thug.velocityY = 0;
 	}
-	if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
-		thug.velocityX *= -1;
-		thug.setDirection(-1 * thug.sprite.getScaleX());
+	if(thug.decay==166){
+		if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
+			thug.velocityX *= -1;
+			thug.setDirection(-1 * thug.sprite.getScaleX());
+		}
+	}else{
+		thug.decay--;
+		if(onGround(thug.sprite)){
+			thug.velocityX = 0;
+		}
+		thug.sprite.setOpacity(thug.decay/166);
+		if(thug.decay < 0){
+			thug.sprite.destroy();
+			arr.splice(ind,1)
+		}
 	}
 	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
 	thug.sprite.setY(thug.sprite.getY()+thug.velocityY);
@@ -218,8 +247,8 @@ function startPlayer(){
 }
 function BadGuy(x,y,image){
 	this.sprite= new Kinetic.Sprite({
-	    x: 400,
-	    y: 100,
+	    x: x,
+	    y: y,
 	    image: image,
 	    animation: 'walk',
 	    animations: personanimation,
@@ -231,6 +260,14 @@ function BadGuy(x,y,image){
 	this.velocityX = 5/3;
 	this.velocityY = 0;
 	this.air = false;
+	this.decay = 166;
+	this.die = function(){
+		this.decay--;
+		this.sprite.setAnimation('death');
+		this.sprite.afterFrame(5,function(){
+			this.setAnimation('death_stay')
+		});
+	}
 	this.setDirection = function(direction){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){

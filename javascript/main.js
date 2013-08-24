@@ -60,6 +60,8 @@ spysheet.onload = function() {
 var enemysheet = new Image();
 enemysheet.onload = function() {
   thugs[0] = new BadGuy(400,100,enemysheet);
+  thugs[1] = new BadGuy(300,100,enemysheet);
+  thugs[2] = new BadGuy(200,100,enemysheet);
   start();
 };
 var cloaksheet = new Image();
@@ -96,9 +98,13 @@ function start(){
     stage.add(playerLayer);
     startPlayer();
     spy.start();
-    enemies.add(thugs[0].sprite);
+    for(var i = 0; i < thugs.length;i++){
+      enemies.add(thugs[i].sprite);
+    }
     stage.add(enemies);
-    thugs[0].sprite.start();
+    for(var i = 0; i < thugs.length;i++){
+      thugs[i].sprite.start();
+    }
     window.setInterval(loop,constants.playloop);
   }
 }
