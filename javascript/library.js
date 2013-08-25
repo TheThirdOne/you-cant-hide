@@ -209,7 +209,7 @@ function runEnemy(val, ind, arr){
 			thug.setDirection(-1);
 			
 		if(env.cloaked < 166 ){
-			if(thug.canSee(spy.getX(),spy.getY()) && alarm.getAnimation() != 'alert'){
+			if((thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()+32) || thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()))&& alarm.getAnimation() != 'alert'){
 				alarm.setAnimation('alert');
 				alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
