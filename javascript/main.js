@@ -27,13 +27,13 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[-64,100,64,228],[50,170,400,64],[600,300,64,96]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[-64,0,64,400],[50,170,400,64],[600,300,64,96]]});
   start();
 }
 var laddersheet = new Image();
 laddersheet.onload = function(){
     ladder = new Kinetic.Rect({
-        x: 100,
+        x: 150,
         y: 135,
         width: 32,
         height: 230,
