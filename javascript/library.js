@@ -105,7 +105,8 @@ var env = {
 	climb: false,
 	fall: false,
 	cloaked: 0,
-	paused: false
+	paused: false,
+	alarms: 3
 };
 var velocityX = 0, velocityY = 0;
 function loop(){
@@ -211,6 +212,11 @@ function runEnemy(val, ind, arr){
 				alarm.setAnimation('alert');
 				alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
+					env.alarms--;
+					if(env.alarms < 0){
+						pauseText.setText('Game Over');
+						bindingsDown[pause]();
+					}
 					throw 'alert';
 				});
 			}

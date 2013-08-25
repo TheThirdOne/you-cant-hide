@@ -21,7 +21,7 @@ function init_bindings(){
 		}
 	};
 	bindingsDown[pause] = function(){
-		env.paused = (env.paused)?false:true;
+		env.paused = (env.paused&&pauseText.getText()=='Pause')?false:true;
 		if(env.paused){
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.stop();
