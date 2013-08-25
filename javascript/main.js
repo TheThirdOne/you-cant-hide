@@ -59,6 +59,15 @@ levels.base = function(){
       width: 32,
       height:64
     });
+    this.resetCloak = function(){
+      this.env.cloaked = 0;
+      this.clock.setAnimation('idle');
+    };
+    this.cloak = function(){
+      this.env.cloaked++;
+      if(this.clock.getAnimation() != 'run')
+        this.clock.setAnimation('run');
+    };
   }
 levels[0] = function (){
     out = new levels.base();

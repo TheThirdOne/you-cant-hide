@@ -48,14 +48,14 @@ function init_bindings(){
 	}
 	bindingsDown[attack] = function(){
 		stab();
-		currentlevel.env.cloaked = 0;
+		currentlevel.resetCloak();
 		currentlevel.knife.setAnimation('stab');
 		currentlevel.knife.afterFrame(2, function(){
 			currentlevel.knife.setAnimation('idle');
 		});
 	}
 	bindingsDown[up] = function(){
-	  currentlevel.env.cloaked = 0;
+	  currentlevel.resetCloak();
 	  if(onGround(currentlevel.spy) && !tryLadder(currentlevel.spy)){
 	    console.log('jump');
 	    currentlevel.spy.setAnimation('jump');
@@ -73,7 +73,7 @@ function init_bindings(){
 	  if(tryLadder(currentlevel.spy)){
 	    currentlevel.env.fall = true;
 	  }
-	  currentlevel.env.cloaked = 0;
+	  currentlevel.resetCloak();
 	};
 	bindingsUp[down] = function(){
 	  currentlevel.env.fall = false;
@@ -88,7 +88,7 @@ function init_bindings(){
 	    constants.goingRight = true;
 	    constants.goingLeft = false;
 	  }
-	  currentlevel.env.cloaked = 0;
+	  currentlevel.resetCloak();
 	};
 	bindingsUp[right] = function(){
 	  if((onGround(currentlevel.spy) || tryLadder(currentlevel.spy))&& constants.goingRight){
@@ -104,7 +104,7 @@ function init_bindings(){
 	    constants.goingLeft = true;
 	    constants.goingRight = false;
 	  }
-	  currentlevel.env.cloaked = 0;
+	  currentlevel.resetCloak();
 	};
 	bindingsUp[left] = function(){
 	  if((onGround(currentlevel.spy) || tryLadder(currentlevel.spy))&& constants.goingLeft){

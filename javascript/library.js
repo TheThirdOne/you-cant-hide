@@ -108,22 +108,19 @@ function loop(){
 				velocityY=0;
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
 				}else{
 					velocityX = 0;
-					currentlevel.env.cloaked++
 				}
 			}
 			if(currentlevel.env.climb){
 				velocityY = -5;
-				currentlevel.env.cloaked = 0;
+				currentlevel.resetCloak();
 			}
 			if(currentlevel.env.fall){
 				velocityY = 5;
-				currentlevel.env.cloaked = 0;
+				currentlevel.resetCloak();
 			}
 		}else{
 			currentlevel.env.fall = false;
@@ -142,13 +139,13 @@ function loop(){
 			}else{
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
+					currentlevel.resetCloak();
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
+					currentlevel.resetCloak();
 				}else{
 					velocityX = 0;
-					currentlevel.env.cloaked++;
+					currentlevel.cloak();
 				}
 				if(constants.jumped){
 					land();
@@ -165,7 +162,7 @@ function loop(){
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);
 
-		var temp = 1 - ((currentlevel.env.cloaked < 166)?currentlevel.env.cloaked/166:1)*.75
+		var temp = 1 - ((currentlevel.env.cloaked < 90)?currentlevel.env.cloaked/90:1)*.75
 		currentlevel.spy.setOpacity(temp);
 		currentlevel.knife.setOpacity(temp);
 	}
@@ -197,7 +194,7 @@ function runEnemy(val, ind, arr){
 		if(!thug.forwardClear(true))
 			thug.setDirection(-1);
 			
-		if(currentlevel.env.cloaked < 166 ){
+		if(currentlevel.env.cloaked < 90 ){
 			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
 				currentlevel.alarm.setAnimation('alert');
 				currentlevel.alarm.afterFrame(3,function (){

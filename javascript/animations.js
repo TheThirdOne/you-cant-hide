@@ -11,7 +11,8 @@ var knife = {
          {name: 'stab', slides:[0,1,2]}],
          columns:4,rows:1,width:32,height:64};
 var clock = {
-  anims:[{name: 'run', slides:[0,1,2,3,4,5,6,7,0]}],
+  anims:[{name: 'run', slides:[0,1,2,3,4,5,6,7,0]},
+         {name: 'idle', slides:[0]}],
          columns:4,rows:2,width:64,height:64};
 var alarm = {
   anims:[{name: 'idle', slides:[0]},
