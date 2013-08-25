@@ -172,6 +172,7 @@ function loop(){
 		velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
 		player.setY(spy.getY()+velocityY);
 		player.setX(spy.getX()+velocityX);
+
 		var temp = 1 - ((env.cloaked < 166)?env.cloaked/166:1)*.75
 		spy.setOpacity(temp);
 		knife.setOpacity(temp);
@@ -203,6 +204,9 @@ function runEnemy(val, ind, arr){
 
 		if(collideRight(thug.sprite))
 			thug.setDirection(-1);
+		if(env.cloaked < 166){
+			console.log(thug.canSee(spy.getX(),spy.getY()));
+		}
 	}else{
 		thug.decay--;
 		if(onGround(thug.sprite)){
@@ -295,6 +299,21 @@ function BadGuy(x,y,image){
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
+	}
+	this.canSee = function(x,y){
+		var temp = 1;
+		if(this.sprite.getScaleX() < 0)
+			temp = -1;
+		if(0 > temp*(x-(this.sprite.getX() + 20*this.sprite.getScaleX())))
+			return false;
+		var dis =Math.abs(x-(this.sprite.getX() + 20*this.sprite.getScaleX()));
+		var dY = (this.sprite.getY()+10) - y;
+		var tan = Math.abs(dY/dis);
+		if(tan > Math.tan(this.sight.getAngle()/2))
+			return false;
+		if(Math.sqrt(dY*dY+dis*dis)>this.sight.getRadius())
+			return false;
+		return true;
 	}
 	this.setDirection = function(direction){
 		if(direction > 0){

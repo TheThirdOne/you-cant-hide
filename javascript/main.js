@@ -78,9 +78,9 @@ knifesheet.onload = function() {
 };
 var enemysheet = new Image();
 enemysheet.onload = function() {
-  thugs[0] = new BadGuy(400,100,enemysheet);
-  thugs[1] = new BadGuy(300,100,enemysheet);
-  thugs[2] = new BadGuy(200,100,enemysheet);
+  thugs[0] = new BadGuy(400,300,enemysheet);
+  thugs[1] = new BadGuy(300,300,enemysheet);
+  thugs[2] = new BadGuy(200,300,enemysheet);
   start();
 };
 spysheet.src = 'res/spy.png';
@@ -125,6 +125,7 @@ function start(){
     }
     stage.add(hud);
     window.setInterval(loop,constants.playloop);
+    init_bindings();
   }
 }
 
