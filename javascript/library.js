@@ -105,7 +105,8 @@ var env = {
 	climb: false,
 	fall: false,
 	cloaked: 0,
-	paused: false
+	paused: false,
+	alarms: 3
 };
 var velocityX = 0, velocityY = 0;
 function loop(){
@@ -168,6 +169,8 @@ function loop(){
 		if(velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy)){
 			velocityX = (onGround(spy)||!keys[up])?0:-.8*velocityX;
 			velocityY += (onGround(spy)||!keys[up])?0:-4;
+			player.setDirection((onGround(spy)||!keys[up])?spy.getScaleX():-spy.getScaleX());
+
 		}
 		velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
 		player.setY(spy.getY()+velocityY);
@@ -209,6 +212,11 @@ function runEnemy(val, ind, arr){
 				alarm.setAnimation('alert');
 				alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
+					env.alarms--;
+					if(env.alarms < 0){
+						pauseText.setText('Game Over');
+						bindingsDown[pause]();
+					}
 					throw 'alert';
 				});
 			}
@@ -233,7 +241,7 @@ function runEnemy(val, ind, arr){
 function startPlayer(){
 	player = {
 		setX: function (x){
-			if(x > stage.getWidth() * .7 || x < stage.getWidth() * .3 ){
+			if((x > stage.getWidth() * .7 && x > spy.getX())|| (x < stage.getWidth() * .3 && x < spy.getX())){
 				var back = spy.getX()-x;
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
@@ -260,13 +268,15 @@ function startPlayer(){
 				if(spy.getScaleX() < 0){
 		      		spy.setScaleX(1);
 		      		knife.setScaleX(1);
-		     		player.setX(spy.getX()-spy.getWidth()/2);
+		      		spy.setX(spy.getX()-spy.getWidth()/2);
+					knife.setX(spy.getX()-spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
 			      knife.setScaleX(-1);
-			      player.setX(spy.getX()+spy.getWidth()/2);
+			      spy.setX(spy.getX()+spy.getWidth()/2);
+				  knife.setX(spy.getX()+spy.getWidth()/2);
 			    }
 		    }
 		}

@@ -21,23 +21,30 @@ function init_bindings(){
 		}
 	};
 	bindingsDown[pause] = function(){
-		env.paused = (env.paused)?false:true;
+		env.paused = (env.paused&&pauseText.getText()=='Pause')?false:true;
 		if(env.paused){
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.stop();
 			} 
 			spy.stop();
+			clock.stop();
+			alarm.stop();
+			pauseText.setVisible(true);
 		}else{
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.start();
 			} 
 			spy.start();
+			clock.start();
+			alarm.start();
 			for(var i = 0; i < tempkeys.length; i++){
 				if(bindingsUp[tempkeys[i]])
 		    		bindingsUp[tempkeys[i]]();
 			}
 			tempkeys = [];
+			pauseText.setVisible(false);
 		}
+		hud.draw();
 	}
 	bindingsDown[attack] = function(){
 		stab();
@@ -74,9 +81,9 @@ function init_bindings(){
 	bindingsUp[up] = function(){
 		env.climb = false;
 	}
-	bindingsDown[right] = function(){
-	  player.setDirection(1);
+	bindingsDown[right] = function(){ 
 	  if(onGround(spy) || tryLadder(spy)){
+	  	player.setDirection(1);
 	    spy.setAnimation('walk');
 	    constants.goingRight = true;
 	    constants.goingLeft = false;
@@ -91,8 +98,8 @@ function init_bindings(){
 	  }
 	}
 	bindingsDown[left] = function(){
-	  player.setDirection(-1);
 	  if(onGround(spy) || tryLadder(spy)){
+	  	 player.setDirection(-1);
 	    spy.setAnimation('walk');
 	    constants.goingLeft = true;
 	    constants.goingRight = false;
