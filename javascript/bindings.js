@@ -1,25 +1,42 @@
 var keys = [];
 var bindingsDown = [], bindingsUp = [];
 var down = 83, left = 65, right = 68, up=87, attack=32, pause=80;
+var tempkeys = [];
 function init_bindings(){
 	document.onkeydown = function(evt){
 	  if(!keys[evt.keyCode] ){
 	    keys[evt.keyCode] = true;
 	    console.log(evt.keyCode);
-	    if(bindingsDown[evt.keyCode])
+	    if((!env.paused || evt.keyCode == pause ) && bindingsDown[evt.keyCode])
 	      bindingsDown[evt.keyCode]();
 	  }
 	}
 	document.onkeyup = function(evt){
 	  keys[evt.keyCode] = false;
-	  if(bindingsUp[evt.keyCode])
-	      bindingsUp[evt.keyCode]();
+	  if((!env.paused || evt.keyCode == pause )){
+		  if(bindingsUp[evt.keyCode])
+		      bindingsUp[evt.keyCode]();
+		}else{
+			tempkeys.push(evt.keyCode);
+		}
 	};
 	bindingsDown[pause] = function(){
-		env.paused = true;
-	}
-	bindingsUp[pause] = function(){
-		env.paused = false;
+		env.paused = (env.paused)?false:true;
+		if(env.paused){
+			for(var i = 0; i < thugs.length; i++){
+				thugs[i].sprite.stop();
+			} 
+			spy.stop();
+		}else{
+			for(var i = 0; i < thugs.length; i++){
+				thugs[i].sprite.start();
+			} 
+			spy.start();
+			for(var i = 0; i < tempkeys.length; i++){
+				if(bindingsUp[tempkeys[i]])
+		    		bindingsUp[tempkeys[i]]();
+			}
+		}
 	}
 	bindingsDown[attack] = function(){
 		stab();
