@@ -208,6 +208,7 @@ function runEnemy(val, ind, arr){
 		thug.sprite.setOpacity(thug.decay/66);
 		if(thug.decay < 0){
 			thug.sprite.destroy();
+			
 			arr.splice(ind,1)
 		}
 	}
@@ -226,8 +227,8 @@ function startPlayer(){
 				ladders.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
-				enemies.getChildren().each(function (node,n){
-					node.setX(node.getX()+back);
+				thugs.forEach(function (node,ind,arr){
+					node.addX(back);
 				});
 				collision.draw();
 				ladders.draw();
@@ -284,11 +285,12 @@ function BadGuy(x,y,image){
         angleDeg:60,
         rotationDeg:-30,
         fill: 'red',
-        opacity: .3
+        opacity: .1
 	});
 	this.die = function(){
 		this.decay--;
 		this.sprite.setAnimation('death');
+		this.sight.destroy();
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
@@ -297,11 +299,13 @@ function BadGuy(x,y,image){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){
 	      		this.sprite.setScaleX(1);
+	      		this.sight.setRotationDeg(-30);
 	     		this.setX(this.sprite.getX() - this.sprite.getWidth()/2);
 	    	}
 	    }else{
 	    	if(spy.getScaleX() > 0){
 		      this.sprite.setScaleX(-1);
+		      this.sight.setRotationDeg(150);
 		      this.setX(this.sprite.getX() + this.sprite.getWidth()/2);
 		    }
 	    }
