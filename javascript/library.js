@@ -167,7 +167,7 @@ function loop(){
 				velocityY = 0;
 			}
 		if(velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy)){
-			velocityX = (onGround(spy)||!keys[up])?0:-.8*velocityX;
+			velocityX = (onGround(spy)||!keys[up])?0:-.9*velocityX;
 			velocityY += (onGround(spy)||!keys[up])?0:-4;
 			player.setDirection((onGround(spy)||!keys[up])?spy.getScaleX():-spy.getScaleX());
 
@@ -202,13 +202,14 @@ function runEnemy(val, ind, arr){
 		thug.velocityY = 0;
 	}
 	if(thug.decay==66){
-		if(collideLeft(thug.sprite))
+		if(!thug.forwardClear(false))
 			thug.setDirection(1);
 
-		if(collideRight(thug.sprite))
+		if(!thug.forwardClear(true))
 			thug.setDirection(-1);
+			
 		if(env.cloaked < 166 ){
-			if(thug.canSee(spy.getX(),spy.getY()) && alarm.getAnimation() != 'alert'){
+			if((thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()+32) || thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()))&& alarm.getAnimation() != 'alert'){
 				alarm.setAnimation('alert');
 				alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
@@ -331,6 +332,28 @@ function BadGuy(x,y,image){
 			return false;
 		return true;
 	}
+	this.forwardClear = function(direction){
+		if(direction){
+			if(collideRight(this.sprite)){
+				console.log('right collide')
+				return false
+			}
+				
+			this.addX(this.velocityX*this.sprite.getScaleX());
+			var temp = onGround(this.sprite)
+			this.addX(-this.velocityX*this.sprite.getScaleX());
+			return temp;
+		}else{
+			if(collideLeft(this.sprite)){
+				console.log('left collide')
+				return false
+			}
+			this.addX(this.velocityX*this.sprite.getScaleX());
+			var temp = onGround(this.sprite)
+			this.addX(-this.velocityX*this.sprite.getScaleX());
+			return temp;
+		}
+	};
 	this.setDirection = function(direction){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){
