@@ -123,7 +123,7 @@ cratesheet.src = 'res/crate.png';
 clocksheet.src = 'res/clock.png';
 alarmsheet.src = 'res/alarm.png';
 
-var countdown = 9aaa;
+var countdown = 9;
 function start(){
   countdown--;
   if(countdown <= 0){
