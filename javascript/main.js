@@ -1,4 +1,4 @@
-var spy, knife, enemy,thugs = [];
+var knife, enemy,thugs = [];
 var back, clock;
 var blocks, crates;
 var ladder;
@@ -103,17 +103,6 @@ cratesheet.onload = function(){
 }
 var spysheet = new Image();
 spysheet.onload = function() {
-  spy = new Kinetic.Sprite({
-    x: 400,
-    y: 36,
-    image: spysheet,
-    animation: 'idle',
-    animations: personanimation,
-    frameRate: 8,
-    index: 0,
-    width: 32,
-    height:64
-  });
   start();
 };
 var knifesheet = new Image();
@@ -170,10 +159,10 @@ function startlevel(level){
     ladders.add(level.ladders[i]);
   }
   stage.add(ladders);
-  playerLayer.add(spy);
+  playerLayer.add(level.spy);
   playerLayer.add(knife);
   stage.add(playerLayer);
-  spy.start();
+  level.spy.start();
   knife.start();
   for(var i = 0; i < thugs.length;i++){
     enemies.add(thugs[i].sprite);
@@ -205,6 +194,10 @@ function reset(){
     temp[i].destroy()
   }
   temp = enemies.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
+  temp = playerLayer.getChildren();
   for(var i = temp.length-1; 0 <= i; i--){
     temp[i].destroy()
   }

@@ -49,9 +49,9 @@ function testCollision(object, x, y){
 	return true;
 }
 function stab(){
-	var x = spy.getX() + spy.getWidth()*spy.getScaleX()*1.5;
-	var y = spy.getY()+64*.2;
-	var x2 = spy.getX() + spy.getWidth()*spy.getScaleX();
+	var x = currentlevel.spy.getX() + currentlevel.spy.getWidth()*currentlevel.spy.getScaleX()*1.5;
+	var y = currentlevel.spy.getY()+64*.2;
+	var x2 = currentlevel.spy.getX() + currentlevel.spy.getWidth()*currentlevel.spy.getScaleX();
 	var temp = enemies.getChildren();
 	var killed;
 	for(var i = 0; i < temp.length; i++){
@@ -70,16 +70,16 @@ function stab(){
 function land(){
 	var temp = (velocityY > 0)?1:-1;
 	for(var i = 0; i < velocityY * temp; i++){
-		player.setY(spy.getY()-temp);
-		if(!onGround(spy)){
+		player.setY(currentlevel.spy.getY()-temp);
+		if(!onGround(currentlevel.spy)){
 			break;
 		}
 	}
-	player.setY(spy.getY()+temp);
+	player.setY(currentlevel.spy.getY()+temp);
 	velocityX = 0;
 	velocityY = 0;
 
-	spy.setAnimation('idle');
+	currentlevel.spy.setAnimation('idle');
 	if(keys[left]||keys[right]){
 		if(keys[left]){
 			bindingsDown[left]();
@@ -113,8 +113,8 @@ function loop(){
 	if(!env.paused){
 		thugs.forEach(runEnemy);
 		hud.draw();
-		if(tryLadder(spy)){
-			if(!onGround(spy)){
+		if(tryLadder(currentlevel.spy)){
+			if(!onGround(currentlevel.spy)){
 				velocityY=0;
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
@@ -140,12 +140,12 @@ function loop(){
 			env.climb = false;
 		}
 		if(!env.fall && !env.climb)
-			if(!onGround(spy)&&!tryLadder(spy)){
+			if(!onGround(currentlevel.spy)&&!tryLadder(currentlevel.spy)){
 				velocityY += constants.gravity;
-				if(spy.getAnimation() == 'walk' ){
-					spy.setAnimation('jump_stay')
+				if(currentlevel.spy.getAnimation() == 'walk' ){
+					currentlevel.spy.setAnimation('jump_stay')
 				}
-				velocityY = (collideHead(spy))?1:velocityY;
+				velocityY = (collideHead(currentlevel.spy))?1:velocityY;
 				if(keys[up])
 					bindingsDown[up]();
 				constants.jumped=true;
@@ -166,18 +166,22 @@ function loop(){
 				}
 				velocityY = 0;
 			}
-		if(velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy)){
-			velocityX = (onGround(spy)||!keys[up])?0:-.9*velocityX;
-			velocityY += (onGround(spy)||!keys[up])?0:-4;
-			player.setDirection((onGround(spy)||!keys[up])?spy.getScaleX():-spy.getScaleX());
+		if(velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy)){
+			velocityX = (onGround(currentlevel.spy)||!keys[up])?0:-.9*velocityX;
+			velocityY += (onGround(currentlevel.spy)||!keys[up])?0:-4;
+			player.setDirection((onGround(currentlevel.spy)||!keys[up])?currentlevel.spy.getScaleX():-
+
+currentlevel.spy.getScaleX());
 
 		}
-		velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
-		player.setY(spy.getY()+velocityY);
-		player.setX(spy.getX()+velocityX);
+		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight
+
+(currentlevel.spy))?0:velocityX;
+		player.setY(currentlevel.spy.getY()+velocityY);
+		player.setX(currentlevel.spy.getX()+velocityX);
 
 		var temp = 1 - ((env.cloaked < 166)?env.cloaked/166:1)*.75
-		spy.setOpacity(temp);
+		currentlevel.spy.setOpacity(temp);
 		knife.setOpacity(temp);
 	}
 }
@@ -209,7 +213,11 @@ function runEnemy(val, ind, arr){
 			thug.setDirection(-1);
 			
 		if(env.cloaked < 166 ){
-			if((thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()+32) || thug.canSee(spy.getX()+16*spy.getScaleX(),spy.getY()))&& alarm.getAnimation() != 'alert'){
+			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) 
+
+|| thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& alarm.getAnimation() != 
+
+'alert'){
 				alarm.setAnimation('alert');
 				alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
@@ -235,15 +243,19 @@ function runEnemy(val, ind, arr){
 		}
 	}
 
-	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?-5/3:thug.velocityX;
+	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight
+
+(thug.sprite))?-5/3:thug.velocityX;
 	thug.setY(thug.sprite.getY()+thug.velocityY);
 	thug.setX(thug.sprite.getX()+thug.velocityX*thug.sprite.getScaleX());
 }
 function startPlayer(){
 	player = {
 		setX: function (x){
-			if((x > stage.getWidth() * .7 && x > spy.getX())|| (x < stage.getWidth() * .3 && x < spy.getX())){
-				var back = spy.getX()-x;
+			if((x > stage.getWidth() * .7 && x > currentlevel.spy.getX())|| (x < stage.getWidth() * .3 && x < 
+
+currentlevel.spy.getX())){
+				var back = currentlevel.spy.getX()-x;
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
@@ -256,28 +268,28 @@ function startPlayer(){
 				collision.draw();
 				ladders.draw();
 			}else{
-				spy.setX(x);
+				currentlevel.spy.setX(x);
 				knife.setX(x);
 			}
 		},
 		setY: function (y){
-			spy.setY(y);
+			currentlevel.spy.setY(y);
 			knife.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
-				if(spy.getScaleX() < 0){
-		      		spy.setScaleX(1);
+				if(currentlevel.spy.getScaleX() < 0){
+		      		currentlevel.spy.setScaleX(1);
 		      		knife.setScaleX(1);
-		      		spy.setX(spy.getX()-spy.getWidth()/2);
-					knife.setX(spy.getX()-spy.getWidth()/2);
+		      		currentlevel.spy.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
+					knife.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
 		    	}
 		    }else{
-		    	if(spy.getScaleX() > 0){
-			      spy.setScaleX(-1);
+		    	if(currentlevel.spy.getScaleX() > 0){
+			      currentlevel.spy.setScaleX(-1);
 			      knife.setScaleX(-1);
-			      spy.setX(spy.getX()+spy.getWidth()/2);
-				  knife.setX(spy.getX()+spy.getWidth()/2);
+			      currentlevel.spy.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
+				  knife.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
 			    }
 		    }
 		}
@@ -387,7 +399,9 @@ function BadGuy(x,y,image){
 function generateCollisions(level){
 	var out = [];
 	for(var i = 0; i < level.blocks.length; i++){
-		out[i]= new Kinetic.Rect({x: level.blocks[i][0],y: level.blocks[i][1],width: level.blocks[i][2],height: level.blocks[i][3],fillPatternImage: level.image});
+		out[i]= new Kinetic.Rect({x: level.blocks[i][0],y: level.blocks[i][1],width: level.blocks[i][2],height: 
+
+level.blocks[i][3],fillPatternImage: level.image});
 	}
 	return out;
 }

@@ -26,7 +26,7 @@ function init_bindings(){
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.stop();
 			} 
-			spy.stop();
+			currentlevel.spy.stop();
 			clock.stop();
 			alarm.stop();
 			pauseText.setVisible(true);
@@ -34,7 +34,7 @@ function init_bindings(){
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.start();
 			} 
-			spy.start();
+			currentlevel.spy.start();
 			clock.start();
 			alarm.start();
 			for(var i = 0; i < tempkeys.length; i++){
@@ -56,21 +56,21 @@ function init_bindings(){
 	}
 	bindingsDown[up] = function(){
 	  env.cloaked = 0;
-	  if(onGround(spy) && !tryLadder(spy)){
+	  if(onGround(currentlevel.spy) && !tryLadder(currentlevel.spy)){
 	    console.log('jump');
-	    spy.setAnimation('jump');
+	    currentlevel.spy.setAnimation('jump');
 	    velocityY -= 10;
 	    constants.jumped = true;
-	    player.setY(spy.getY()-20);
-	    spy.afterFrame(1, function() {
-	      spy.setAnimation('jump_stay');
+	    player.setY(currentlevel.spy.getY()-20);
+	    currentlevel.spy.afterFrame(1, function() {
+	      currentlevel.spy.setAnimation('jump_stay');
 	    });
-	  }else if (tryLadder(spy)){
+	  }else if (tryLadder(currentlevel.spy)){
 	  	env.climb = true;
 	  }
 	};
 	bindingsDown[down] = function(){
-	  if(tryLadder(spy)){
+	  if(tryLadder(currentlevel.spy)){
 	    env.fall = true;
 	  }
 	  env.cloaked = 0;
@@ -82,33 +82,33 @@ function init_bindings(){
 		env.climb = false;
 	}
 	bindingsDown[right] = function(){ 
-	  if(onGround(spy) || tryLadder(spy)){
+	  if(onGround(currentlevel.spy) || tryLadder(currentlevel.spy)){
 	  	player.setDirection(1);
-	    spy.setAnimation('walk');
+	    currentlevel.spy.setAnimation('walk');
 	    constants.goingRight = true;
 	    constants.goingLeft = false;
 	  }
 	  env.cloaked = 0;
 	};
 	bindingsUp[right] = function(){
-	  if((onGround(spy) || tryLadder(spy))&& constants.goingRight){
-	    spy.setAnimation('idle');
+	  if((onGround(currentlevel.spy) || tryLadder(currentlevel.spy))&& constants.goingRight){
+	    currentlevel.spy.setAnimation('idle');
 	    velocityX = 0;
 	    constants.goingRight = false;
 	  }
 	}
 	bindingsDown[left] = function(){
-	  if(onGround(spy) || tryLadder(spy)){
+	  if(onGround(currentlevel.spy) || tryLadder(currentlevel.spy)){
 	  	 player.setDirection(-1);
-	    spy.setAnimation('walk');
+	    currentlevel.spy.setAnimation('walk');
 	    constants.goingLeft = true;
 	    constants.goingRight = false;
 	  }
 	  env.cloaked = 0;
 	};
 	bindingsUp[left] = function(){
-	  if((onGround(spy) || tryLadder(spy))&& constants.goingLeft){
-	    spy.setAnimation('idle');
+	  if((onGround(currentlevel.spy) || tryLadder(currentlevel.spy))&& constants.goingLeft){
+	    currentlevel.spy.setAnimation('idle');
 	    velocityX = 0;
 	    constants.goingLeft = false;
 	  }
