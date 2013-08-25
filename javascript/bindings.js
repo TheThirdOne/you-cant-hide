@@ -27,11 +27,15 @@ function init_bindings(){
 				thugs[i].sprite.stop();
 			} 
 			spy.stop();
+			clock.stop();
+			alarm.stop();
 		}else{
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.start();
 			} 
 			spy.start();
+			clock.start();
+			alarm.start();
 			for(var i = 0; i < tempkeys.length; i++){
 				if(bindingsUp[tempkeys[i]])
 		    		bindingsUp[tempkeys[i]]();
