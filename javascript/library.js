@@ -202,11 +202,12 @@ function runEnemy(val, ind, arr){
 		thug.velocityY = 0;
 	}
 	if(thug.decay==66){
-		if(collideLeft(thug.sprite))
+		if(!thug.forwardClear(false))
 			thug.setDirection(1);
 
-		if(collideRight(thug.sprite))
+		if(!thug.forwardClear(true))
 			thug.setDirection(-1);
+			
 		if(env.cloaked < 166 ){
 			if(thug.canSee(spy.getX(),spy.getY()) && alarm.getAnimation() != 'alert'){
 				alarm.setAnimation('alert');
@@ -331,6 +332,28 @@ function BadGuy(x,y,image){
 			return false;
 		return true;
 	}
+	this.forwardClear = function(direction){
+		if(direction){
+			if(collideRight(this.sprite)){
+				console.log('right collide')
+				return false
+			}
+				
+			this.addX(this.velocityX*this.sprite.getScaleX());
+			var temp = onGround(this.sprite)
+			this.addX(-this.velocityX*this.sprite.getScaleX());
+			return temp;
+		}else{
+			if(collideLeft(this.sprite)){
+				console.log('left collide')
+				return false
+			}
+			this.addX(this.velocityX*this.sprite.getScaleX());
+			var temp = onGround(this.sprite)
+			this.addX(-this.velocityX*this.sprite.getScaleX());
+			return temp;
+		}
+	};
 	this.setDirection = function(direction){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){
