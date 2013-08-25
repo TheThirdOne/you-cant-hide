@@ -14,6 +14,18 @@ var playerLayer = new Kinetic.Layer();
 var enemies = new Kinetic.Layer();
 var hud = new Kinetic.Layer();
 
+var pauseText = new Kinetic.Text({
+        x: 0,
+        y: 60,
+        text: 'Pause',
+        fontSize: 200,
+        fontFamily: 'Calibri',
+        fill: '#FFF',
+        width: 1000,
+        padding: 20,
+        align: 'center',
+        visible: false
+});
 var concretesheet = new Image();
 concretesheet.onload = function(){
   back = new Kinetic.Rect({
@@ -162,6 +174,7 @@ function startlevel(level){
   clock.start();
   hud.add(alarm);
   alarm.start();
+  hud.add(pauseText);
   stage.add(hud);
   window.setInterval(loop,constants.playloop);
   init_bindings();

@@ -29,6 +29,7 @@ function init_bindings(){
 			spy.stop();
 			clock.stop();
 			alarm.stop();
+			pauseText.setVisible(true);
 		}else{
 			for(var i = 0; i < thugs.length; i++){
 				thugs[i].sprite.start();
@@ -41,7 +42,9 @@ function init_bindings(){
 		    		bindingsUp[tempkeys[i]]();
 			}
 			tempkeys = [];
+			pauseText.setVisible(false);
 		}
+		hud.draw();
 	}
 	bindingsDown[attack] = function(){
 		stab();
