@@ -36,6 +36,7 @@ function init_bindings(){
 				if(bindingsUp[tempkeys[i]])
 		    		bindingsUp[tempkeys[i]]();
 			}
+			tempkeys = [];
 		}
 	}
 	bindingsDown[attack] = function(){
