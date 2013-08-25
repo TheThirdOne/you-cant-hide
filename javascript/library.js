@@ -167,7 +167,7 @@ function loop(){
 				velocityY = 0;
 			}
 		if(velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy)){
-			velocityX = (onGround(spy)||!keys[up])?0:-.8*velocityX;
+			velocityX = (onGround(spy)||!keys[up])?0:-.9*velocityX;
 			velocityY += (onGround(spy)||!keys[up])?0:-4;
 			player.setDirection((onGround(spy)||!keys[up])?spy.getScaleX():-spy.getScaleX());
 

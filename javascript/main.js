@@ -69,16 +69,16 @@ alarmsheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,170,400,64]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,100,400,32], [64, 200,400,32], [64, 132,32,68] ]});
   start();
 }
 var laddersheet = new Image();
 laddersheet.onload = function(){
     ladder = new Kinetic.Rect({
         x: 150,
-        y: 135,
+        y: 60,
         width: 32,
-        height: 230,
+        height: 305,
         fillPatternImage: laddersheet
       });
     start();
@@ -92,7 +92,7 @@ var spysheet = new Image();
 spysheet.onload = function() {
   spy = new Kinetic.Sprite({
     x: 400,
-    y: 100,
+    y: 36,
     image: spysheet,
     animation: 'idle',
     animations: personanimation,
