@@ -27,7 +27,7 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,64,400],[0,300,64,96],[-64,0,64,400],[50,170,400,64]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[50,170,400,64]]});
   start();
 }
 var laddersheet = new Image();
