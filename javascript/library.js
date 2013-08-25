@@ -204,8 +204,14 @@ function runEnemy(val, ind, arr){
 
 		if(collideRight(thug.sprite))
 			thug.setDirection(-1);
-		if(env.cloaked < 166){
-			console.log(thug.canSee(spy.getX(),spy.getY()));
+		if(env.cloaked < 166 ){
+			if(thug.canSee(spy.getX(),spy.getY()) && alarm.getAnimation() != 'alert'){
+				alarm.setAnimation('alert');
+				alarm.afterFrame(3,function (){
+					play_multi_sound('alarm',0);
+					throw 'alert';
+				});
+			}
 		}
 	}else{
 		thug.decay--;
@@ -295,7 +301,7 @@ function BadGuy(x,y,image){
 		this.decay--;
 		this.sprite.setAnimation('death');
 		this.sight.destroy();
-		play_multi_sound('hurt');
+		play_multi_sound('hurt',0);
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
