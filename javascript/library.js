@@ -276,6 +276,15 @@ function BadGuy(x,y,image){
 	this.velocityY = 0;
 	this.air = false;
 	this.decay = 66;
+	this.sight = new Kinetic.Wedge({
+		x: x,
+        y: y,
+        radius: 128,
+        angleDeg:60,
+        rotationDeg:-30,
+        fill: 'red',
+        opacity: .3
+	});
 	this.die = function(){
 		this.decay--;
 		this.sprite.setAnimation('death');
@@ -295,6 +304,20 @@ function BadGuy(x,y,image){
 		      this.sprite.setX(this.sprite.getX() + this.sprite.getWidth()/2);
 		    }
 	    }
+	}
+	this.addX = function(x){
+		this.setX(this.sprite.getX()+x);
+	}
+	this.addY = function(y){
+		this.setY(this.sprite.getY()+y);
+	}
+	this.setX= function(x){
+		this.sight.setX(x+20*this.sprite.getScaleX());
+		this.sprite.setX(x);
+	}
+	this.setY= function(y){
+		this.sight.setY(y+20);
+		this.sprite.setY(y);
 	}
 }
 function generateCollisions(level){

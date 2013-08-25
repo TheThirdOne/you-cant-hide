@@ -102,6 +102,7 @@ cloaksheet.src = 'res/cloak.png';
 laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
 cratesheet.src = 'res/crate.png';
+
 var countdown = 8;
 function start(){
   countdown--;
@@ -131,6 +132,10 @@ function start(){
     for(var i = 0; i < thugs.length;i++){
       thugs[i].sprite.start();
     }
+    for(var i = 0; i < thugs.length;i++){
+      hud.add(thugs[i].sight);
+    }
+    stage.add(hud);
     window.setInterval(loop,constants.playloop);
   }
 }
