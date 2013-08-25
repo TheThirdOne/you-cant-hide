@@ -48,6 +48,17 @@ levels.base = function(){
       paused: false,
       alarms: 3
     };
+    this.knife = new Kinetic.Sprite({
+      x: 0,
+      y: 0,
+      image: knifesheet,
+      animation: 'idle',
+      animations: knifeanimation,
+      frameRate: 8,
+      index: 0,
+      width: 32,
+      height:64
+    });
   }
 levels[0] = function (){
     out = new levels.base();
@@ -122,17 +133,6 @@ spysheet.onload = function() {
 };
 var knifesheet = new Image();
 knifesheet.onload = function() {
-  knife = new Kinetic.Sprite({
-    x: 400,
-    y: 100,
-    image: knifesheet,
-    animation: 'idle',
-    animations: knifeanimation,
-    frameRate: 8,
-    index: 0,
-    width: 32,
-    height:64
-  });
   start();
 };
 var enemysheet = new Image();
@@ -175,10 +175,10 @@ function startlevel(level){
   }
   stage.add(ladders);
   playerLayer.add(level.spy);
-  playerLayer.add(knife);
+  playerLayer.add(level.knife);
   stage.add(playerLayer);
   level.spy.start();
-  knife.start();
+  level.knife.start();
   for(var i = 0; i < level.thugs.length;i++){
     enemies.add(level.thugs[i].sprite);
   }

@@ -49,9 +49,9 @@ function init_bindings(){
 	bindingsDown[attack] = function(){
 		stab();
 		currentlevel.env.cloaked = 0;
-		knife.setAnimation('stab');
-		knife.afterFrame(2, function(){
-			knife.setAnimation('idle');
+		currentlevel.knife.setAnimation('stab');
+		currentlevel.knife.afterFrame(2, function(){
+			currentlevel.knife.setAnimation('idle');
 		});
 	}
 	bindingsDown[up] = function(){

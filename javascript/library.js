@@ -167,7 +167,7 @@ function loop(){
 
 		var temp = 1 - ((currentlevel.env.cloaked < 166)?currentlevel.env.cloaked/166:1)*.75
 		currentlevel.spy.setOpacity(temp);
-		knife.setOpacity(temp);
+		currentlevel.knife.setOpacity(temp);
 	}
 }
 function runEnemy(val, ind, arr){
@@ -246,27 +246,27 @@ function startPlayer(){
 				ladders.draw();
 			}else{
 				currentlevel.spy.setX(x);
-				knife.setX(x);
+				currentlevel.knife.setX(x);
 			}
 		},
 		setY: function (y){
 			currentlevel.spy.setY(y);
-			knife.setY(y);
+			currentlevel.knife.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
 				if(currentlevel.spy.getScaleX() < 0){
 		      		currentlevel.spy.setScaleX(1);
-		      		knife.setScaleX(1);
+		      		currentlevel.knife.setScaleX(1);
 		      		currentlevel.spy.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
-					knife.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
+					currentlevel.knife.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(currentlevel.spy.getScaleX() > 0){
 			      currentlevel.spy.setScaleX(-1);
-			      knife.setScaleX(-1);
+			      currentlevel.knife.setScaleX(-1);
 			      currentlevel.spy.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
-				  knife.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
+				  currentlevel.knife.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
 			    }
 		    }
 		}
