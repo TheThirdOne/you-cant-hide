@@ -321,7 +321,6 @@ function BadGuy(x,y,image){
 	this.forwardClear = function(direction){
 		if(direction){
 			if(collideRight(this.sprite)){
-				console.log('right collide')
 				return false
 			}
 				
@@ -331,7 +330,6 @@ function BadGuy(x,y,image){
 			return temp;
 		}else{
 			if(collideLeft(this.sprite)){
-				console.log('left collide')
 				return false
 			}
 			this.addX(this.velocityX*this.sprite.getScaleX());
