@@ -44,6 +44,18 @@ levels[0] = function (){
     width: 64,
     height:64
   });
+  this.pauseText = new Kinetic.Text({
+        x: 0,
+        y: 60,
+        text: 'Pause',
+        fontSize: 200,
+        fontFamily: 'Calibri',
+        fill: '#FFF',
+        width: 1000,
+        padding: 20,
+        align: 'center',
+        visible: false
+});
 }
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -58,18 +70,6 @@ var playerLayer = new Kinetic.Layer();
 var enemies = new Kinetic.Layer();
 var hud = new Kinetic.Layer();
 
-var pauseText = new Kinetic.Text({
-        x: 0,
-        y: 60,
-        text: 'Pause',
-        fontSize: 200,
-        fontFamily: 'Calibri',
-        fill: '#FFF',
-        width: 1000,
-        padding: 20,
-        align: 'center',
-        visible: false
-});
 var concretesheet = new Image();
 concretesheet.onload = function(){
   back = new Kinetic.Rect({
@@ -164,21 +164,21 @@ function startlevel(level){
   stage.add(playerLayer);
   level.spy.start();
   knife.start();
-  for(var i = 0; i < thugs.length;i++){
-    enemies.add(thugs[i].sprite);
+  for(var i = 0; i < level.thugs.length;i++){
+    enemies.add(level.thugs[i].sprite);
   }
   stage.add(enemies);
-  for(var i = 0; i < thugs.length;i++){
-    thugs[i].sprite.start();
+  for(var i = 0; i < level.thugs.length;i++){
+    level.thugs[i].sprite.start();
   }
-  for(var i = 0; i < thugs.length;i++){
-    hud.add(thugs[i].sight);
+  for(var i = 0; i < level.thugs.length;i++){
+    hud.add(level.thugs[i].sight);
   }
   hud.add(level.clock);
   level.clock.start();
   hud.add(level.alarm);
   level.alarm.start();
-  hud.add(pauseText);
+  hud.add(level.pauseText);
   stage.add(hud);
   currentlevel.interval = window.setInterval(loop,constants.playloop);
   init_bindings();

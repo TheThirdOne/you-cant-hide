@@ -62,9 +62,9 @@ function stab(){
 	}
 	if(!killed)
 		return;
-	for(var i = 0; i < thugs.length; i++){
-		if(killed==thugs[i].sprite && thugs[i].decay > 65)
-			thugs[i].die();
+	for(var i = 0; i < currentlevel.thugs.length; i++){
+		if(killed==currentlevel.thugs[i].sprite && currentlevel.thugs[i].decay > 65)
+			currentlevel.thugs[i].die();
 	}
 }
 function land(){
@@ -111,7 +111,7 @@ var env = {
 var velocityX = 0, velocityY = 0;
 function loop(){
 	if(!env.paused){
-		thugs.forEach(runEnemy);
+		currentlevel.thugs.forEach(runEnemy);
 		hud.draw();
 		if(tryLadder(currentlevel.spy)){
 			if(!onGround(currentlevel.spy)){
@@ -208,13 +208,13 @@ function runEnemy(val, ind, arr){
 			thug.setDirection(-1);
 			
 		if(env.cloaked < 166 ){
-			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& alarm.getAnimation() != 'alert'){
+			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
 				currentlevel.alarm.setAnimation('alert');
 				currentlevel.alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
 					env.alarms--;
 					if(env.alarms < 0){
-						pauseText.setText('Game Over');
+						currentlevel.pauseText.setText('Game Over');
 						bindingsDown[pause]();
 					}
 					throw 'alert';
@@ -249,7 +249,7 @@ function startPlayer(){
 				ladders.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
-				thugs.forEach(function (node,ind,arr){
+				currentlevel.thugs.forEach(function (node,ind,arr){
 					node.addX(back);
 				});
 				collision.draw();

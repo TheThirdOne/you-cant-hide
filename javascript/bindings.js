@@ -21,18 +21,18 @@ function init_bindings(){
 		}
 	};
 	bindingsDown[pause] = function(){
-		env.paused = (env.paused&&pauseText.getText()=='Pause')?false:true;
+		env.paused = (env.paused&&currentlevel.pauseText.getText()=='Pause')?false:true;
 		if(env.paused){
-			for(var i = 0; i < thugs.length; i++){
-				thugs[i].sprite.stop();
+			for(var i = 0; i < currentlevel.thugs.length; i++){
+				currentlevel.thugs[i].sprite.stop();
 			} 
 			currentlevel.spy.stop();
 			currentlevel.clock.stop();
 			currentlevel.alarm.stop();
-			pauseText.setVisible(true);
+			currentlevel.pauseText.setVisible(true);
 		}else{
-			for(var i = 0; i < thugs.length; i++){
-				thugs[i].sprite.start();
+			for(var i = 0; i < currentlevel.thugs.length; i++){
+				currentlevel.thugs[i].sprite.start();
 			} 
 			currentlevel.spy.start();
 			currentlevel.clock.start();
@@ -42,7 +42,7 @@ function init_bindings(){
 		    		bindingsUp[tempkeys[i]]();
 			}
 			tempkeys = [];
-			pauseText.setVisible(false);
+			currentlevel.pauseText.setVisible(false);
 		}
 		hud.draw();
 	}
