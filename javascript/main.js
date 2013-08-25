@@ -1,5 +1,5 @@
 var knife, enemy,thugs = [];
-var back, clock;
+var back;
 var blocks, crates;
 var ladder;
 var levels = [];
@@ -20,6 +20,17 @@ levels[0] = function (){
     frameRate: 8,
     index: 0,
     width: 32,
+    height:64
+  });
+  this.clock = new Kinetic.Sprite({
+    x: 904,
+    y: 32,
+    image: clocksheet,
+    animation: 'run',
+    animations: clockanimation,
+    frameRate: .88,
+    index: 0,
+    width: 64,
     height:64
   });
 }
@@ -61,17 +72,6 @@ concretesheet.onload = function(){
 }
 var clocksheet = new Image();
 clocksheet.onload = function(){
-   clock = new Kinetic.Sprite({
-    x: 904,
-    y: 32,
-    image: clocksheet,
-    animation: 'run',
-    animations: clockanimation,
-    frameRate: .88,
-    index: 0,
-    width: 64,
-    height:64
-  });
   start();
 }
 var alarmsheet = new Image();
@@ -174,8 +174,8 @@ function startlevel(level){
   for(var i = 0; i < thugs.length;i++){
     hud.add(thugs[i].sight);
   }
-  hud.add(clock);
-  clock.start();
+  hud.add(level.clock);
+  level.clock.start();
   hud.add(alarm);
   alarm.start();
   hud.add(pauseText);
