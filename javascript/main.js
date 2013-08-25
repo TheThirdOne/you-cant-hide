@@ -1,21 +1,50 @@
-var spy, knife, enemy,thugs = [];
-var back, clock;
+var knife, enemy,thugs = [];
+var back;
 var blocks, crates;
 var ladder;
-var stage = new Kinetic.Stage({
-  container: 'container',
-  width: 1000,
-  height: 400
-});
-var level1 = {};
-var background = new Kinetic.Layer();
-var collision = new Kinetic.Layer();
-var ladders = new Kinetic.Layer();
-var playerLayer = new Kinetic.Layer();
-var enemies = new Kinetic.Layer();
-var hud = new Kinetic.Layer();
-
-var pauseText = new Kinetic.Text({
+var levels = [];
+levels[0] = function (){
+    this.thugs = [];
+    this.thugs[0] = new BadGuy(400,300,enemysheet);
+    this.thugs[1] = new BadGuy(300,136,enemysheet);
+    this.thugs[2] = new BadGuy(200,300,enemysheet);
+    this.blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,100,400,32], [64, 200,400,32], [64, 132,32,68] ]});
+    this.crates = generateCollisions({image: cratesheet, blocks: [[600,300,320,64],[710,236,196,64],[792,172,64,64]]});
+    this.ladders = generateCollisions({image: laddersheet, blocks: [[150,60,32,305]]});
+    this.spy= new Kinetic.Sprite({
+    x: 400,
+    y: 36,
+    image: spysheet,
+    animation: 'idle',
+    animations: personanimation,
+    frameRate: 8,
+    index: 0,
+    width: 32,
+    height:64
+  });
+  this.clock = new Kinetic.Sprite({
+    x: 904,
+    y: 32,
+    image: clocksheet,
+    animation: 'run',
+    animations: clockanimation,
+    frameRate: .88,
+    index: 0,
+    width: 64,
+    height:64
+  });
+  this.alarm = new Kinetic.Sprite({
+    x: 808,
+    y: 32,
+    image: alarmsheet,
+    animation: 'idle',
+    animations: alarmanimation,
+    frameRate: 8,
+    index: 0,
+    width: 64,
+    height:64
+  });
+  this.pauseText = new Kinetic.Text({
         x: 0,
         y: 60,
         text: 'Pause',
@@ -26,7 +55,31 @@ var pauseText = new Kinetic.Text({
         padding: 20,
         align: 'center',
         visible: false
+  });
+  this.env = {
+    goingLeft: false,
+    goingRight: false,
+    jumped: false,
+    climb: false,
+    fall: false,
+    cloaked: 0,
+    paused: false,
+    alarms: 3
+  };
+}
+var stage = new Kinetic.Stage({
+  container: 'container',
+  width: 1000,
+  height: 400
 });
+var currentlevel;
+var background = new Kinetic.Layer();
+var collision = new Kinetic.Layer();
+var ladders = new Kinetic.Layer();
+var playerLayer = new Kinetic.Layer();
+var enemies = new Kinetic.Layer();
+var hud = new Kinetic.Layer();
+
 var concretesheet = new Image();
 concretesheet.onload = function(){
   back = new Kinetic.Rect({
@@ -40,32 +93,10 @@ concretesheet.onload = function(){
 }
 var clocksheet = new Image();
 clocksheet.onload = function(){
-   clock = new Kinetic.Sprite({
-    x: 904,
-    y: 32,
-    image: clocksheet,
-    animation: 'run',
-    animations: clockanimation,
-    frameRate: .88,
-    index: 0,
-    width: 64,
-    height:64
-  });
   start();
 }
 var alarmsheet = new Image();
 alarmsheet.onload = function(){
-   alarm = new Kinetic.Sprite({
-    x: 808,
-    y: 32,
-    image: alarmsheet,
-    animation: 'idle',
-    animations: alarmanimation,
-    frameRate: 8,
-    index: 0,
-    width: 64,
-    height:64
-  });
   start();
 }
 var blocksheet = new Image();
@@ -82,17 +113,6 @@ cratesheet.onload = function(){
 }
 var spysheet = new Image();
 spysheet.onload = function() {
-  spy = new Kinetic.Sprite({
-    x: 400,
-    y: 36,
-    image: spysheet,
-    animation: 'idle',
-    animations: personanimation,
-    frameRate: 8,
-    index: 0,
-    width: 32,
-    height:64
-  });
   start();
 };
 var knifesheet = new Image();
@@ -112,9 +132,6 @@ knifesheet.onload = function() {
 };
 var enemysheet = new Image();
 enemysheet.onload = function() {
-  thugs[0] = new BadGuy(400,300,enemysheet);
-  thugs[1] = new BadGuy(300,136,enemysheet);
-  thugs[2] = new BadGuy(200,300,enemysheet);
   start();
 };
 spysheet.src = 'res/spy.png';
@@ -131,15 +148,16 @@ var countdown = 9;
 function start(){
   countdown--;
   if(countdown <= 0){
-    level1.blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,100,400,32], [64, 200,400,32], [64, 132,32,68] ]});
-    level1.crates = generateCollisions({image: cratesheet, blocks: [[600,300,320,64],[710,236,196,64],[792,172,64,64]]});
-    level1.ladders = generateCollisions({image: laddersheet, blocks: [[150,60,32,305]]});
-    startlevel(level1);
+    background.add(back);
+    stage.add(background);
+    currentlevel = [];
+    startPlayer();
+    startlevel(new levels[0]());
   }
 }
 function startlevel(level){
-  background.add(back);
-  stage.add(background);
+  reset();
+  currentlevel = level;
   for(var i = 0; i < level.blocks.length; i++){
     collision.add(level.blocks[i]);
   }
@@ -151,30 +169,52 @@ function startlevel(level){
     ladders.add(level.ladders[i]);
   }
   stage.add(ladders);
-  playerLayer.add(spy);
+  playerLayer.add(level.spy);
   playerLayer.add(knife);
   stage.add(playerLayer);
-  startPlayer();
-  spy.start();
+  level.spy.start();
   knife.start();
-  for(var i = 0; i < thugs.length;i++){
-    enemies.add(thugs[i].sprite);
+  for(var i = 0; i < level.thugs.length;i++){
+    enemies.add(level.thugs[i].sprite);
   }
   stage.add(enemies);
-  for(var i = 0; i < thugs.length;i++){
-    thugs[i].sprite.start();
+  for(var i = 0; i < level.thugs.length;i++){
+    level.thugs[i].sprite.start();
   }
-  for(var i = 0; i < thugs.length;i++){
-    hud.add(thugs[i].sight);
+  for(var i = 0; i < level.thugs.length;i++){
+    hud.add(level.thugs[i].sight);
   }
-  hud.add(clock);
-  clock.start();
-  hud.add(alarm);
-  alarm.start();
-  hud.add(pauseText);
+  hud.add(level.clock);
+  level.clock.start();
+  hud.add(level.alarm);
+  level.alarm.start();
+  hud.add(level.pauseText);
   stage.add(hud);
-  window.setInterval(loop,constants.playloop);
+  currentlevel.interval = window.setInterval(loop,constants.playloop);
   init_bindings();
+}
+function reset(){
+  window.clearInterval(currentlevel.interval);
+  var temp = collision.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
+  temp = ladders.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
+  temp = enemies.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
+  temp = playerLayer.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
+  temp = hud.getChildren();
+  for(var i = temp.length-1; 0 <= i; i--){
+    temp[i].destroy()
+  }
 }
 var sounds = {};
 init_sound('hurt',5, .5);
