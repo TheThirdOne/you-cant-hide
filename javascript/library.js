@@ -204,8 +204,14 @@ function runEnemy(val, ind, arr){
 
 		if(collideRight(thug.sprite))
 			thug.setDirection(-1);
-		if(env.cloaked < 166){
-			console.log(thug.canSee(spy.getX(),spy.getY()));
+		if(env.cloaked < 166 ){
+			if(thug.canSee(spy.getX(),spy.getY()) && alarm.getAnimation() != 'alert'){
+				alarm.setAnimation('alert');
+				alarm.afterFrame(3,function (){
+					play_multi_sound('alarm');
+					throw 'alert';
+				});
+			}
 		}
 	}else{
 		thug.decay--;
