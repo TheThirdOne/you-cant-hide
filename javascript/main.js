@@ -27,7 +27,7 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,64,400],[0,300,64,96],[-64,0,64,400],[50,170,400,64]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[50,170,400,64]]});
   start();
 }
 var laddersheet = new Image();
@@ -102,6 +102,7 @@ cloaksheet.src = 'res/cloak.png';
 laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
 cratesheet.src = 'res/crate.png';
+
 var countdown = 8;
 function start(){
   countdown--;
@@ -131,6 +132,10 @@ function start(){
     for(var i = 0; i < thugs.length;i++){
       thugs[i].sprite.start();
     }
+    for(var i = 0; i < thugs.length;i++){
+      hud.add(thugs[i].sight);
+    }
+    stage.add(hud);
     window.setInterval(loop,constants.playloop);
   }
 }

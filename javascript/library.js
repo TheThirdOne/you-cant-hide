@@ -111,6 +111,7 @@ var velocityX = 0, velocityY = 0;
 function loop(){
 	if(!env.paused){
 		thugs.forEach(runEnemy);
+		hud.draw();
 		if(tryLadder(spy)){
 			if(!onGround(spy)){
 				velocityY=0;
@@ -184,12 +185,12 @@ function runEnemy(val, ind, arr){
 		if(thug.air){
 			var temp = (thug.velocityY > 0)?1:-1;
 			for(var i = 0; i < thug.velocityY * temp; i++){
-				thug.sprite.setY(thug.sprite.getY()-temp);
+				thug.setY(thug.sprite.getY()-temp);
 				if(!onGround(thug.sprite)){
 					break;
 				}
 			}
-			thug.sprite.setY(thug.sprite.getY()+temp);
+			thug.setY(thug.sprite.getY()+temp);
 			thug.air = false;
 		}
 		thug.velocityY = 0;
@@ -207,12 +208,13 @@ function runEnemy(val, ind, arr){
 		thug.sprite.setOpacity(thug.decay/66);
 		if(thug.decay < 0){
 			thug.sprite.destroy();
+			
 			arr.splice(ind,1)
 		}
 	}
 	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
-	thug.sprite.setY(thug.sprite.getY()+thug.velocityY);
-	thug.sprite.setX(thug.sprite.getX()+thug.velocityX);
+	thug.setY(thug.sprite.getY()+thug.velocityY);
+	thug.setX(thug.sprite.getX()+thug.velocityX);
 }
 function startPlayer(){
 	player = {
@@ -225,8 +227,8 @@ function startPlayer(){
 				ladders.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
 				});
-				enemies.getChildren().each(function (node,n){
-					node.setX(node.getX()+back);
+				thugs.forEach(function (node,ind,arr){
+					node.addX(back);
 				});
 				collision.draw();
 				ladders.draw();
@@ -276,9 +278,19 @@ function BadGuy(x,y,image){
 	this.velocityY = 0;
 	this.air = false;
 	this.decay = 66;
+	this.sight = new Kinetic.Wedge({
+		x: x,
+        y: y,
+        radius: 128,
+        angleDeg:60,
+        rotationDeg:-30,
+        fill: 'red',
+        opacity: .1
+	});
 	this.die = function(){
 		this.decay--;
 		this.sprite.setAnimation('death');
+		this.sight.destroy();
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
@@ -287,14 +299,30 @@ function BadGuy(x,y,image){
 		if(direction > 0){
 			if(this.sprite.getScaleX() < 0){
 	      		this.sprite.setScaleX(1);
-	     		this.sprite.setX(this.sprite.getX() - this.sprite.getWidth()/2);
+	      		this.sight.setRotationDeg(-30);
+	     		this.setX(this.sprite.getX() - this.sprite.getWidth()/2);
 	    	}
 	    }else{
 	    	if(spy.getScaleX() > 0){
 		      this.sprite.setScaleX(-1);
-		      this.sprite.setX(this.sprite.getX() + this.sprite.getWidth()/2);
+		      this.sight.setRotationDeg(150);
+		      this.setX(this.sprite.getX() + this.sprite.getWidth()/2);
 		    }
 	    }
+	}
+	this.addX = function(x){
+		this.setX(this.sprite.getX()+x);
+	}
+	this.addY = function(y){
+		this.setY(this.sprite.getY()+y);
+	}
+	this.setX= function(x){
+		this.sight.setX(x+20*this.sprite.getScaleX());
+		this.sprite.setX(x);
+	}
+	this.setY= function(y){
+		this.sight.setY(y+10);
+		this.sprite.setY(y);
 	}
 }
 function generateCollisions(level){
