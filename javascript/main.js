@@ -1,6 +1,6 @@
 var spy, cloak, knife, enemy,thugs = [];
 var back;
-var blocks;
+var blocks, crates;
 var ladder;
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -27,19 +27,23 @@ concretesheet.onload = function(){
 }
 var blocksheet = new Image();
 blocksheet.onload = function(){
-  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,640,96],[0,300,64,96],[-64,100,64,228],[50,170,400,64],[600,300,64,96]]});
+  blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,64,400],[0,300,64,96],[-64,0,64,400],[50,170,400,64]]});
   start();
 }
 var laddersheet = new Image();
 laddersheet.onload = function(){
     ladder = new Kinetic.Rect({
-        x: 100,
+        x: 150,
         y: 135,
         width: 32,
         height: 230,
         fillPatternImage: laddersheet
       });
-    ladder.ladder = true;
+    start();
+}
+var cratesheet = new Image();
+cratesheet.onload = function(){
+   crates = generateCollisions({image: cratesheet, blocks: [[600,300,320,64],[710,236,196,64],[792,172,64,64]]})
     start();
 }
 var spysheet = new Image();
@@ -97,7 +101,8 @@ concretesheet.src = 'res/concrete.png';
 cloaksheet.src = 'res/cloak.png';
 laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
-var countdown = 7;
+cratesheet.src = 'res/crate.png';
+var countdown = 8;
 function start(){
   countdown--;
   if(countdown <= 0){
@@ -105,6 +110,9 @@ function start(){
     stage.add(background);
     for(var i = 0; i < blocks.length; i++){
       collision.add(blocks[i]);
+    }
+    for(var i = 0; i < crates.length; i++){
+      collision.add(crates[i]);
     }
     stage.add(collision);
     ladders.add(ladder);
