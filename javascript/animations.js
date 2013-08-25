@@ -11,6 +11,7 @@ var knife = {
          {name: 'stab', slides:[0,1,2]}],
          columns:4,rows:1,width:32,height:64};
 var personanimation = AnimationSet(person);
+var thuganimation = AnimationSet(person);
 var knifeanimation = AnimationSet(knife);
 
 function AnimationSet(data){
