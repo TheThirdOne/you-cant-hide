@@ -28,9 +28,6 @@ function tryLadder(sprite){
 function collide(x,y,children){
 	if(!children){
 		var temp = collision.getChildren();
-		if(env.fall){
-			return false;
-		}
 	}else
 		var temp = children
 	for(var i = 0; i < temp.length; i++){
@@ -107,67 +104,75 @@ var env = {
 	jumped: false,
 	climb: false,
 	fall: false,
-	cloaked: 0
+	cloaked: 0,
+	paused: false
 };
 var velocityX = 0, velocityY = 0;
 function loop(){
-	thugs.forEach(runEnemy);
-	if(!onGround(spy)){
-		velocityY += constants.gravity;
-		if(spy.getAnimation() == 'walk' ){
-			spy.setAnimation('jump_stay')
-		}
-		velocityY = (collideHead(spy))?1:velocityY;
-		if(keys[up])
-			bindingsDown[up]();
-		constants.jumped=true;
-	}else{
-		if(constants.goingRight){
-			velocityX = constants.walkSpeed;
-			env.cloaked = 0;
-		}else if(constants.goingLeft){
-			velocityX = -constants.walkSpeed;
-			env.cloaked = 0;
-		}else{
-			velocityX = 0;
-			env.cloaked++;
-		}
-		if(constants.jumped){
-			land();
-			constants.jumped = false;
-		}
-		velocityY = 0;
-	}
-	if(tryLadder(spy)){
-		if(!onGround(spy)){
-			velocityY=0;
-			if(constants.goingRight){
-				velocityX = constants.walkSpeed;
-				env.cloaked = 0;
-			}else if(constants.goingLeft){
-				velocityX = -constants.walkSpeed;
-				env.cloaked = 0;
-			}else{
-				velocityX = 0;
-				env.cloaked++
+	if(!env.paused){
+		thugs.forEach(runEnemy);
+		if(tryLadder(spy)){
+			if(!onGround(spy)){
+				velocityY=0;
+				if(constants.goingRight){
+					velocityX = constants.walkSpeed;
+					env.cloaked = 0;
+				}else if(constants.goingLeft){
+					velocityX = -constants.walkSpeed;
+					env.cloaked = 0;
+				}else{
+					velocityX = 0;
+					env.cloaked++
+				}
 			}
+			if(env.climb){
+				velocityY = -5;
+				env.cloaked = 0;
+			}
+			if(env.fall){
+				velocityY = 5;
+				env.cloaked = 0;
+			}
+		}else{
+			env.fall = false;
+			env.climb = false;
 		}
-		if(env.climb){
-			velocityY = -5;
-			env.cloaked = 0;
+		if(!env.fall && !env.climb)
+			if(!onGround(spy)){
+				velocityY += constants.gravity;
+				if(spy.getAnimation() == 'walk' ){
+					spy.setAnimation('jump_stay')
+				}
+				velocityY = (collideHead(spy))?1:velocityY;
+				if(keys[up])
+					bindingsDown[up]();
+				constants.jumped=true;
+			}else{
+				if(constants.goingRight){
+					velocityX = constants.walkSpeed;
+					env.cloaked = 0;
+				}else if(constants.goingLeft){
+					velocityX = -constants.walkSpeed;
+					env.cloaked = 0;
+				}else{
+					velocityX = 0;
+					env.cloaked++;
+				}
+				if(constants.jumped){
+					land();
+					constants.jumped = false;
+				}
+				velocityY = 0;
+			}
+		if(velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy)){
+			velocityX = (onGround(spy))?0:-.8*velocityX;
+			velocityY += (onGround(spy))?0:-4;
 		}
-		if(env.fall){
-			velocityY = 5;
-			env.cloaked = 0;
-		}
-	}else{
-		env.fall = false;
-		env.climb = false;
+		velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
+		player.setY(spy.getY()+velocityY);
+		player.setX(spy.getX()+velocityX);
+		cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
 	}
-	velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
-	player.setY(spy.getY()+velocityY);
-	player.setX(spy.getX()+velocityX);
-	cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
 }
 function runEnemy(val, ind, arr){
 	var thug = val;
