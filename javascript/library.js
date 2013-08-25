@@ -289,6 +289,7 @@ function BadGuy(x,y,image){
 		this.decay--;
 		this.sprite.setAnimation('death');
 		this.sight.destroy();
+		play_multi_sound('hurt');
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
