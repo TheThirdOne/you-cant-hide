@@ -1,5 +1,5 @@
 var spy, knife, enemy,thugs = [];
-var back;
+var back, clock;
 var blocks, crates;
 var ladder;
 var stage = new Kinetic.Stage({
@@ -23,6 +23,21 @@ concretesheet.onload = function(){
         height: 400,
         fillPatternImage: concretesheet
       });
+  start();
+}
+var clocksheet = new Image();
+clocksheet.onload = function(){
+   clock = new Kinetic.Sprite({
+    x: 904,
+    y: 32,
+    image: clocksheet,
+    animation: 'run',
+    animations: clockanimation,
+    frameRate: .88,
+    index: 0,
+    width: 64,
+    height:64
+  });
   start();
 }
 var blocksheet = new Image();
@@ -90,45 +105,49 @@ concretesheet.src = 'res/concrete.png';
 laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
 cratesheet.src = 'res/crate.png';
+clocksheet.src = 'res/clock.png';
 
-var countdown = 7;
+var countdown = 8;
 function start(){
   countdown--;
   if(countdown <= 0){
-    background.add(back);
-    stage.add(background);
-    for(var i = 0; i < blocks.length; i++){
-      collision.add(blocks[i]);
-    }
-    for(var i = 0; i < crates.length; i++){
-      collision.add(crates[i]);
-    }
-    stage.add(collision);
-    ladders.add(ladder);
-    stage.add(ladders);
-    playerLayer.add(spy);
-    playerLayer.add(knife);
-    //playerLayer.add(cloak);
-    stage.add(playerLayer);
-    startPlayer();
-    spy.start();
-    knife.start();
-    for(var i = 0; i < thugs.length;i++){
-      enemies.add(thugs[i].sprite);
-    }
-    stage.add(enemies);
-    for(var i = 0; i < thugs.length;i++){
-      thugs[i].sprite.start();
-    }
-    for(var i = 0; i < thugs.length;i++){
-      hud.add(thugs[i].sight);
-    }
-    stage.add(hud);
-    window.setInterval(loop,constants.playloop);
-    init_bindings();
+    startlevel();
   }
 }
-
+function startlevel(level){
+  background.add(back);
+  stage.add(background);
+  for(var i = 0; i < blocks.length; i++){
+    collision.add(blocks[i]);
+  }
+  for(var i = 0; i < crates.length; i++){
+    collision.add(crates[i]);
+  }
+  stage.add(collision);
+  ladders.add(ladder);
+  stage.add(ladders);
+  playerLayer.add(spy);
+  playerLayer.add(knife);
+  stage.add(playerLayer);
+  startPlayer();
+  spy.start();
+  knife.start();
+  for(var i = 0; i < thugs.length;i++){
+    enemies.add(thugs[i].sprite);
+  }
+  stage.add(enemies);
+  for(var i = 0; i < thugs.length;i++){
+    thugs[i].sprite.start();
+  }
+  for(var i = 0; i < thugs.length;i++){
+    hud.add(thugs[i].sight);
+  }
+  hud.add(clock);
+  clock.start();
+  stage.add(hud);
+  window.setInterval(loop,constants.playloop);
+  init_bindings();
+}
 var sounds = {};
 init_sound('hurt',5, .5);
 function init_sound(type, channels, volume){
