@@ -172,7 +172,9 @@ function loop(){
 		velocityX = (velocityX < 0 && collideLeft(spy) || velocityX > 0 && collideRight(spy))?0:velocityX;
 		player.setY(spy.getY()+velocityY);
 		player.setX(spy.getX()+velocityX);
-		cloak.setOpacity(((env.cloaked < 166)?env.cloaked/166:1)*.75);
+		var temp = 1 - ((env.cloaked < 166)?env.cloaked/166:1)*.75
+		spy.setOpacity(temp);
+		knife.setOpacity(temp);
 	}
 }
 function runEnemy(val, ind, arr){
@@ -235,27 +237,23 @@ function startPlayer(){
 			}else{
 				spy.setX(x);
 				knife.setX(x);
-				cloak.setX(x);
 			}
 		},
 		setY: function (y){
 			spy.setY(y);
 			knife.setY(y);
-			cloak.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
 				if(spy.getScaleX() < 0){
 		      		spy.setScaleX(1);
 		      		knife.setScaleX(1);
-		      		cloak.setScaleX(1);
 		     		player.setX(spy.getX()-spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
 			      knife.setScaleX(-1);
-			      cloak.setScaleX(-1);
 			      player.setX(spy.getX()+spy.getWidth()/2);
 			    }
 		    }
@@ -291,6 +289,7 @@ function BadGuy(x,y,image){
 		this.decay--;
 		this.sprite.setAnimation('death');
 		this.sight.destroy();
+		play_multi_sound('hurt');
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
