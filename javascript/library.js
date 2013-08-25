@@ -140,7 +140,7 @@ function loop(){
 			env.climb = false;
 		}
 		if(!env.fall && !env.climb)
-			if(!onGround(spy)){
+			if(!onGround(spy)&&!tryLadder(spy)){
 				velocityY += constants.gravity;
 				if(spy.getAnimation() == 'walk' ){
 					spy.setAnimation('jump_stay')
