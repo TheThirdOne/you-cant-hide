@@ -198,10 +198,11 @@ function runEnemy(val, ind, arr){
 		thug.velocityY = 0;
 	}
 	if(thug.decay==66){
-		if(collideLeft(thug.sprite) || collideRight(thug.sprite)){
-			thug.velocityX *= -1;
-			thug.setDirection(-1 * thug.sprite.getScaleX());
-		}
+		if(collideLeft(thug.sprite))
+			thug.setDirection(1);
+
+		if(collideRight(thug.sprite))
+			thug.setDirection(-1);
 	}else{
 		thug.decay--;
 		if(onGround(thug.sprite)){
@@ -214,9 +215,10 @@ function runEnemy(val, ind, arr){
 			arr.splice(ind,1)
 		}
 	}
-	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?0:thug.velocityX;
+
+	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?-5/3:thug.velocityX;
 	thug.setY(thug.sprite.getY()+thug.velocityY);
-	thug.setX(thug.sprite.getX()+thug.velocityX);
+	thug.setX(thug.sprite.getX()+thug.velocityX*thug.sprite.getScaleX());
 }
 function startPlayer(){
 	player = {
@@ -302,7 +304,7 @@ function BadGuy(x,y,image){
 	     		this.setX(this.sprite.getX() - this.sprite.getWidth()/2);
 	    	}
 	    }else{
-	    	if(spy.getScaleX() > 0){
+	    	if(this.sprite.getScaleX() > 0){
 		      this.sprite.setScaleX(-1);
 		      this.sight.setRotationDeg(150);
 		      this.setX(this.sprite.getX() + this.sprite.getWidth()/2);
