@@ -233,7 +233,7 @@ function runEnemy(val, ind, arr){
 function startPlayer(){
 	player = {
 		setX: function (x){
-			if(x > stage.getWidth() * .7 || x < stage.getWidth() * .3 ){
+			if((x > stage.getWidth() * .7 && x > spy.getX())|| (x < stage.getWidth() * .3 && x < spy.getX())){
 				var back = spy.getX()-x;
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
@@ -260,13 +260,15 @@ function startPlayer(){
 				if(spy.getScaleX() < 0){
 		      		spy.setScaleX(1);
 		      		knife.setScaleX(1);
-		     		player.setX(spy.getX()-spy.getWidth()/2);
+		      		spy.setX(spy.getX()-spy.getWidth()/2);
+					knife.setX(spy.getX()-spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(spy.getScaleX() > 0){
 			      spy.setScaleX(-1);
 			      knife.setScaleX(-1);
-			      player.setX(spy.getX()+spy.getWidth()/2);
+			      spy.setX(spy.getX()+spy.getWidth()/2);
+				  knife.setX(spy.getX()+spy.getWidth()/2);
 			    }
 		    }
 		}
