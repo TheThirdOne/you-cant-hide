@@ -1,4 +1,4 @@
-var spy, cloak, knife, enemy,thugs = [];
+var spy, knife, enemy,thugs = [];
 var back;
 var blocks, crates;
 var ladder;
@@ -83,27 +83,15 @@ enemysheet.onload = function() {
   thugs[2] = new BadGuy(200,100,enemysheet);
   start();
 };
-var cloaksheet = new Image();
-cloaksheet.onload = function(){
-  cloak = new Kinetic.Rect({
-        x: 0,
-        y: 0,
-        width: 32,
-        height: 64,
-        fillPatternImage: cloaksheet
-      });
-  start();
-}
 spysheet.src = 'res/spy.png';
 enemysheet.src = 'res/thug.png';
 blocksheet.src = 'res/ground.png';
 concretesheet.src = 'res/concrete.png';
-cloaksheet.src = 'res/cloak.png';
 laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
 cratesheet.src = 'res/crate.png';
 
-var countdown = 8;
+var countdown = 7;
 function start(){
   countdown--;
   if(countdown <= 0){
@@ -120,7 +108,7 @@ function start(){
     stage.add(ladders);
     playerLayer.add(spy);
     playerLayer.add(knife);
-    playerLayer.add(cloak);
+    //playerLayer.add(cloak);
     stage.add(playerLayer);
     startPlayer();
     spy.start();
