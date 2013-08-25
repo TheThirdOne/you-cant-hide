@@ -98,19 +98,9 @@ var constants = {
 	walkSpeed: 5,
 	playloop: 30
 };
-var env = {
-	goingLeft: false,
-	goingRight: false,
-	jumped: false,
-	climb: false,
-	fall: false,
-	cloaked: 0,
-	paused: false,
-	alarms: 3
-};
 var velocityX = 0, velocityY = 0;
 function loop(){
-	if(!env.paused){
+	if(!currentlevel.env.paused){
 		currentlevel.thugs.forEach(runEnemy);
 		hud.draw();
 		if(tryLadder(currentlevel.spy)){
@@ -118,28 +108,28 @@ function loop(){
 				velocityY=0;
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					env.cloaked = 0;
+					currentlevel.env.cloaked = 0;
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					env.cloaked = 0;
+					currentlevel.env.cloaked = 0;
 				}else{
 					velocityX = 0;
-					env.cloaked++
+					currentlevel.env.cloaked++
 				}
 			}
-			if(env.climb){
+			if(currentlevel.env.climb){
 				velocityY = -5;
-				env.cloaked = 0;
+				currentlevel.env.cloaked = 0;
 			}
-			if(env.fall){
+			if(currentlevel.env.fall){
 				velocityY = 5;
-				env.cloaked = 0;
+				currentlevel.env.cloaked = 0;
 			}
 		}else{
-			env.fall = false;
-			env.climb = false;
+			currentlevel.env.fall = false;
+			currentlevel.env.climb = false;
 		}
-		if(!env.fall && !env.climb)
+		if(!currentlevel.env.fall && !currentlevel.env.climb)
 			if(!onGround(currentlevel.spy)&&!tryLadder(currentlevel.spy)){
 				velocityY += constants.gravity;
 				if(currentlevel.spy.getAnimation() == 'walk' ){
@@ -152,13 +142,13 @@ function loop(){
 			}else{
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					env.cloaked = 0;
+					currentlevel.env.cloaked = 0;
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					env.cloaked = 0;
+					currentlevel.env.cloaked = 0;
 				}else{
 					velocityX = 0;
-					env.cloaked++;
+					currentlevel.env.cloaked++;
 				}
 				if(constants.jumped){
 					land();
@@ -175,7 +165,7 @@ function loop(){
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);
 
-		var temp = 1 - ((env.cloaked < 166)?env.cloaked/166:1)*.75
+		var temp = 1 - ((currentlevel.env.cloaked < 166)?currentlevel.env.cloaked/166:1)*.75
 		currentlevel.spy.setOpacity(temp);
 		knife.setOpacity(temp);
 	}
@@ -207,13 +197,13 @@ function runEnemy(val, ind, arr){
 		if(!thug.forwardClear(true))
 			thug.setDirection(-1);
 			
-		if(env.cloaked < 166 ){
+		if(currentlevel.env.cloaked < 166 ){
 			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
 				currentlevel.alarm.setAnimation('alert');
 				currentlevel.alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
-					env.alarms--;
-					if(env.alarms < 0){
+					currentlevel.env.alarms--;
+					if(currentlevel.env.alarms < 0){
 						currentlevel.pauseText.setText('Game Over');
 						bindingsDown[pause]();
 					}

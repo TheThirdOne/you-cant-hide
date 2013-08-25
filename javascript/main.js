@@ -55,7 +55,17 @@ levels[0] = function (){
         padding: 20,
         align: 'center',
         visible: false
-});
+  });
+  this.env = {
+    goingLeft: false,
+    goingRight: false,
+    jumped: false,
+    climb: false,
+    fall: false,
+    cloaked: 0,
+    paused: false,
+    alarms: 3
+  };
 }
 var stage = new Kinetic.Stage({
   container: 'container',
