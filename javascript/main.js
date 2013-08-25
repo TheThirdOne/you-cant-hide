@@ -125,6 +125,7 @@ function start(){
     }
     stage.add(hud);
     window.setInterval(loop,constants.playloop);
+    init_bindings();
   }
 }
 
