@@ -168,7 +168,7 @@ function startlevel(level){
 }
 var sounds = {};
 init_sound('hurt',5, .5);
-init_sound('alarm',8, .5);
+init_sound('alarm',1, .5);
 function init_sound(type, channels, volume){
   sounds[type]=[]
   for (a=0;a<channels;a++) {                  
