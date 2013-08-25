@@ -1,6 +1,6 @@
 var keys = [];
 var bindingsDown = [], bindingsUp = [];
-var down = 83, left = 65, right = 68, up=87, attack=32;
+var down = 83, left = 65, right = 68, up=87, attack=32, pause=80;
 document.onkeydown = function(evt){
   if(!keys[evt.keyCode] ){
     keys[evt.keyCode] = true;
@@ -14,6 +14,12 @@ document.onkeyup = function(evt){
   if(bindingsUp[evt.keyCode])
       bindingsUp[evt.keyCode]();
 };
+bindingsDown[pause] = function(){
+	env.paused = true;
+}
+bindingsUp[pause] = function(){
+	env.paused = false;
+}
 bindingsDown[attack] = function(){
 	stab();
 	env.cloaked = 0;
