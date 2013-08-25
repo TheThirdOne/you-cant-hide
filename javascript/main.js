@@ -40,6 +40,21 @@ clocksheet.onload = function(){
   });
   start();
 }
+var alarmsheet = new Image();
+alarmsheet.onload = function(){
+   alarm = new Kinetic.Sprite({
+    x: 808,
+    y: 32,
+    image: alarmsheet,
+    animation: 'idle',
+    animations: alarmanimation,
+    frameRate: 8,
+    index: 0,
+    width: 64,
+    height:64
+  });
+  start();
+}
 var blocksheet = new Image();
 blocksheet.onload = function(){
   blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[50,170,400,64]]});
@@ -106,8 +121,9 @@ laddersheet.src = 'res/ladder.png';
 knifesheet.src = 'res/knife.png';
 cratesheet.src = 'res/crate.png';
 clocksheet.src = 'res/clock.png';
+alarmsheet.src = 'res/alarm.png';
 
-var countdown = 8;
+var countdown = 9aaa;
 function start(){
   countdown--;
   if(countdown <= 0){
@@ -144,6 +160,8 @@ function startlevel(level){
   }
   hud.add(clock);
   clock.start();
+  hud.add(alarm);
+  alarm.start();
   stage.add(hud);
   window.setInterval(loop,constants.playloop);
   init_bindings();
