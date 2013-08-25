@@ -3,69 +3,74 @@ var back;
 var blocks, crates;
 var ladder;
 var levels = [];
+levels.base = function(){
+    this.clock = new Kinetic.Sprite({
+      x: 904,
+      y: 32,
+      image: clocksheet,
+      animation: 'run',
+      animations: clockanimation,
+      frameRate: .88,
+      index: 0,
+      width: 64,
+      height:64
+    });
+    this.alarm = new Kinetic.Sprite({
+      x: 808,
+      y: 32,
+      image: alarmsheet,
+      animation: 'idle',
+      animations: alarmanimation,
+      frameRate: 8,
+      index: 0,
+      width: 64,
+      height:64
+    });
+    this.pauseText = new Kinetic.Text({
+          x: 0,
+          y: 60,
+          text: 'Pause',
+          fontSize: 200,
+          fontFamily: 'Calibri',
+          fill: '#FFF',
+          width: 1000,
+          padding: 20,
+          align: 'center',
+          visible: false
+    });
+    this.env = {
+      goingLeft: false,
+      goingRight: false,
+      jumped: false,
+      climb: false,
+      fall: false,
+      cloaked: 0,
+      paused: false,
+      alarms: 3
+    };
+  }
 levels[0] = function (){
-    this.thugs = [];
-    this.thugs[0] = new BadGuy(400,300,enemysheet);
-    this.thugs[1] = new BadGuy(300,136,enemysheet);
-    this.thugs[2] = new BadGuy(200,300,enemysheet);
-    this.blocks = generateCollisions({image: blocksheet, blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,100,400,32], [64, 200,400,32], [64, 132,32,68] ]});
-    this.crates = generateCollisions({image: cratesheet, blocks: [[600,300,320,64],[710,236,196,64],[792,172,64,64]]});
-    this.ladders = generateCollisions({image: laddersheet, blocks: [[150,60,32,305]]});
-    this.spy= new Kinetic.Sprite({
-    x: 400,
-    y: 36,
-    image: spysheet,
-    animation: 'idle',
-    animations: personanimation,
-    frameRate: 8,
-    index: 0,
-    width: 32,
-    height:64
-  });
-  this.clock = new Kinetic.Sprite({
-    x: 904,
-    y: 32,
-    image: clocksheet,
-    animation: 'run',
-    animations: clockanimation,
-    frameRate: .88,
-    index: 0,
-    width: 64,
-    height:64
-  });
-  this.alarm = new Kinetic.Sprite({
-    x: 808,
-    y: 32,
-    image: alarmsheet,
-    animation: 'idle',
-    animations: alarmanimation,
-    frameRate: 8,
-    index: 0,
-    width: 64,
-    height:64
-  });
-  this.pauseText = new Kinetic.Text({
-        x: 0,
-        y: 60,
-        text: 'Pause',
-        fontSize: 200,
-        fontFamily: 'Calibri',
-        fill: '#FFF',
-        width: 1000,
-        padding: 20,
-        align: 'center',
-        visible: false
-  });
-  this.env = {
-    goingLeft: false,
-    goingRight: false,
-    jumped: false,
-    climb: false,
-    fall: false,
-    cloaked: 0,
-    paused: false,
-    alarms: 3
-  };
+    out = new levels.base();
+    out.thugs = [];
+    out.thugs[0] = new BadGuy(400,300,enemysheet);
+    out.thugs[1] = new BadGuy(300,136,enemysheet);
+    out.thugs[2] = new BadGuy(200,300,enemysheet);
+    out.blocks = generateCollisions({image: blocksheet,
+     blocks: [[0,364,920,96],[920,0,400,400],[0,300,64,96],[-400,0,400,400],[64,100,400,32], [64, 200,400,32], [64, 132,32,68] ]});
+    out.crates = generateCollisions({image: cratesheet, blocks: [[600,300,320,64],[710,236,196,64],[792,172,64,64]]});
+    out.ladders = generateCollisions({image: laddersheet, blocks: [[150,60,32,305]]});
+    out.spy= new Kinetic.Sprite({
+      x: 400,
+      y: 36,
+      image: spysheet,
+      animation: 'idle',
+      animations: personanimation,
+      frameRate: 8,
+      index: 0,
+      width: 32,
+      height:64
+    });
+    return out;
 }
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -152,7 +157,7 @@ function start(){
     stage.add(background);
     currentlevel = [];
     startPlayer();
-    startlevel(new levels[0]());
+    startlevel(levels[0]());
   }
 }
 function startlevel(level){
