@@ -28,7 +28,7 @@ function init_bindings(){
 			} 
 			currentlevel.spy.stop();
 			currentlevel.clock.stop();
-			alarm.stop();
+			currentlevel.alarm.stop();
 			pauseText.setVisible(true);
 		}else{
 			for(var i = 0; i < thugs.length; i++){
@@ -36,7 +36,7 @@ function init_bindings(){
 			} 
 			currentlevel.spy.start();
 			currentlevel.clock.start();
-			alarm.start();
+			currentlevel.alarm.start();
 			for(var i = 0; i < tempkeys.length; i++){
 				if(bindingsUp[tempkeys[i]])
 		    		bindingsUp[tempkeys[i]]();

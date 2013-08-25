@@ -169,14 +169,9 @@ function loop(){
 		if(velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy)){
 			velocityX = (onGround(currentlevel.spy)||!keys[up])?0:-.9*velocityX;
 			velocityY += (onGround(currentlevel.spy)||!keys[up])?0:-4;
-			player.setDirection((onGround(currentlevel.spy)||!keys[up])?currentlevel.spy.getScaleX():-
-
-currentlevel.spy.getScaleX());
-
+			player.setDirection((onGround(currentlevel.spy)||!keys[up])?currentlevel.spy.getScaleX():-currentlevel.spy.getScaleX());
 		}
-		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight
-
-(currentlevel.spy))?0:velocityX;
+		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy))?0:velocityX;
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);
 
@@ -213,13 +208,9 @@ function runEnemy(val, ind, arr){
 			thug.setDirection(-1);
 			
 		if(env.cloaked < 166 ){
-			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) 
-
-|| thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& alarm.getAnimation() != 
-
-'alert'){
-				alarm.setAnimation('alert');
-				alarm.afterFrame(3,function (){
+			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& alarm.getAnimation() != 'alert'){
+				currentlevel.alarm.setAnimation('alert');
+				currentlevel.alarm.afterFrame(3,function (){
 					play_multi_sound('alarm',0);
 					env.alarms--;
 					if(env.alarms < 0){
@@ -243,18 +234,14 @@ function runEnemy(val, ind, arr){
 		}
 	}
 
-	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight
-
-(thug.sprite))?-5/3:thug.velocityX;
+	thug.velocityX = (thug.velocityX < 0 && collideLeft(thug.sprite) || thug.velocityX > 0 && collideRight(thug.sprite))?-5/3:thug.velocityX;
 	thug.setY(thug.sprite.getY()+thug.velocityY);
 	thug.setX(thug.sprite.getX()+thug.velocityX*thug.sprite.getScaleX());
 }
 function startPlayer(){
 	player = {
 		setX: function (x){
-			if((x > stage.getWidth() * .7 && x > currentlevel.spy.getX())|| (x < stage.getWidth() * .3 && x < 
-
-currentlevel.spy.getX())){
+			if((x > stage.getWidth() * .7 && x > currentlevel.spy.getX())|| (x < stage.getWidth() * .3 && x < currentlevel.spy.getX())){
 				var back = currentlevel.spy.getX()-x;
 				collision.getChildren().each(function (node,n){
 					node.setX(node.getX()+back);
@@ -399,9 +386,8 @@ function BadGuy(x,y,image){
 function generateCollisions(level){
 	var out = [];
 	for(var i = 0; i < level.blocks.length; i++){
-		out[i]= new Kinetic.Rect({x: level.blocks[i][0],y: level.blocks[i][1],width: level.blocks[i][2],height: 
-
-level.blocks[i][3],fillPatternImage: level.image});
+		out[i]= new Kinetic.Rect({x: level.blocks[i][0],y: level.blocks[i][1],
+			width: level.blocks[i][2],height:level.blocks[i][3],fillPatternImage: level.image});
 	}
 	return out;
 }

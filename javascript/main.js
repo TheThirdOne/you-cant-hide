@@ -33,6 +33,17 @@ levels[0] = function (){
     width: 64,
     height:64
   });
+  this.alarm = new Kinetic.Sprite({
+    x: 808,
+    y: 32,
+    image: alarmsheet,
+    animation: 'idle',
+    animations: alarmanimation,
+    frameRate: 8,
+    index: 0,
+    width: 64,
+    height:64
+  });
 }
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -76,17 +87,6 @@ clocksheet.onload = function(){
 }
 var alarmsheet = new Image();
 alarmsheet.onload = function(){
-   alarm = new Kinetic.Sprite({
-    x: 808,
-    y: 32,
-    image: alarmsheet,
-    animation: 'idle',
-    animations: alarmanimation,
-    frameRate: 8,
-    index: 0,
-    width: 64,
-    height:64
-  });
   start();
 }
 var blocksheet = new Image();
@@ -176,8 +176,8 @@ function startlevel(level){
   }
   hud.add(level.clock);
   level.clock.start();
-  hud.add(alarm);
-  alarm.start();
+  hud.add(level.alarm);
+  level.alarm.start();
   hud.add(pauseText);
   stage.add(hud);
   currentlevel.interval = window.setInterval(loop,constants.playloop);
