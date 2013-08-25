@@ -74,9 +74,9 @@ function init_bindings(){
 	bindingsUp[up] = function(){
 		env.climb = false;
 	}
-	bindingsDown[right] = function(){
-	  player.setDirection(1);
+	bindingsDown[right] = function(){ 
 	  if(onGround(spy) || tryLadder(spy)){
+	  	player.setDirection(1);
 	    spy.setAnimation('walk');
 	    constants.goingRight = true;
 	    constants.goingLeft = false;
@@ -91,8 +91,8 @@ function init_bindings(){
 	  }
 	}
 	bindingsDown[left] = function(){
-	  player.setDirection(-1);
 	  if(onGround(spy) || tryLadder(spy)){
+	  	 player.setDirection(-1);
 	    spy.setAnimation('walk');
 	    constants.goingLeft = true;
 	    constants.goingRight = false;
