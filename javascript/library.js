@@ -108,22 +108,19 @@ function loop(){
 				velocityY=0;
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
 				}else{
 					velocityX = 0;
-					currentlevel.env.cloaked++
 				}
 			}
 			if(currentlevel.env.climb){
 				velocityY = -5;
-				currentlevel.env.cloaked = 0;
+				currentlevel.resetCloak();
 			}
 			if(currentlevel.env.fall){
 				velocityY = 5;
-				currentlevel.env.cloaked = 0;
+				currentlevel.resetCloak();
 			}
 		}else{
 			currentlevel.env.fall = false;
@@ -142,13 +139,13 @@ function loop(){
 			}else{
 				if(constants.goingRight){
 					velocityX = constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
+					currentlevel.resetCloak();
 				}else if(constants.goingLeft){
 					velocityX = -constants.walkSpeed;
-					currentlevel.env.cloaked = 0;
+					currentlevel.resetCloak();
 				}else{
 					velocityX = 0;
-					currentlevel.env.cloaked++;
+					currentlevel.cloak();
 				}
 				if(constants.jumped){
 					land();
@@ -164,10 +161,11 @@ function loop(){
 		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy))?0:velocityX;
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);
-
-		var temp = 1 - ((currentlevel.env.cloaked < 166)?currentlevel.env.cloaked/166:1)*.75
+		if(currentlevel.thugs.length <= 0)
+			currentlevel.win();
+		var temp = 1 - ((currentlevel.env.cloaked < 90)?currentlevel.env.cloaked/90:1)*.75
 		currentlevel.spy.setOpacity(temp);
-		knife.setOpacity(temp);
+		currentlevel.knife.setOpacity(temp);
 	}
 }
 function runEnemy(val, ind, arr){
@@ -191,26 +189,7 @@ function runEnemy(val, ind, arr){
 		thug.velocityY = 0;
 	}
 	if(thug.decay==66){
-		if(!thug.forwardClear(false))
-			thug.setDirection(1);
-
-		if(!thug.forwardClear(true))
-			thug.setDirection(-1);
-			
-		if(currentlevel.env.cloaked < 166 ){
-			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
-				currentlevel.alarm.setAnimation('alert');
-				currentlevel.alarm.afterFrame(3,function (){
-					play_multi_sound('alarm',0);
-					currentlevel.env.alarms--;
-					if(currentlevel.env.alarms < 0){
-						currentlevel.pauseText.setText('Game Over');
-						bindingsDown[pause]();
-					}
-					throw 'alert';
-				});
-			}
-		}
+		thug.job();
 	}else{
 		thug.decay--;
 		if(onGround(thug.sprite)){
@@ -246,27 +225,27 @@ function startPlayer(){
 				ladders.draw();
 			}else{
 				currentlevel.spy.setX(x);
-				knife.setX(x);
+				currentlevel.knife.setX(x);
 			}
 		},
 		setY: function (y){
 			currentlevel.spy.setY(y);
-			knife.setY(y);
+			currentlevel.knife.setY(y);
 		},
 		setDirection: function(direction){
 			if(direction > 0){
 				if(currentlevel.spy.getScaleX() < 0){
 		      		currentlevel.spy.setScaleX(1);
-		      		knife.setScaleX(1);
+		      		currentlevel.knife.setScaleX(1);
 		      		currentlevel.spy.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
-					knife.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
+					currentlevel.knife.setX(currentlevel.spy.getX()-currentlevel.spy.getWidth()/2);
 		    	}
 		    }else{
 		    	if(currentlevel.spy.getScaleX() > 0){
 			      currentlevel.spy.setScaleX(-1);
-			      knife.setScaleX(-1);
+			      currentlevel.knife.setScaleX(-1);
 			      currentlevel.spy.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
-				  knife.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
+				  currentlevel.knife.setX(currentlevel.spy.getX()+currentlevel.spy.getWidth()/2);
 			    }
 		    }
 		}
@@ -306,6 +285,28 @@ function BadGuy(x,y,image){
 			this.setAnimation('death_stay')
 		});
 	}
+	this.job = function(){
+		if(!this.forwardClear(false))
+			this.setDirection(1);
+
+		if(!this.forwardClear(true))
+			this.setDirection(-1);
+			
+		if(currentlevel.env.cloaked < 90 ){
+			if((this.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || this.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
+				currentlevel.alarm.setAnimation('alert');
+				currentlevel.alarm.afterFrame(3,function (){
+					play_multi_sound('alarm',0);
+					currentlevel.env.alarms--;
+					if(currentlevel.env.alarms < 0){
+						currentlevel.pauseText.setText('Game Over');
+						bindingsDown[pause]();
+					}
+					throw 'alert';
+				});
+			}
+		}
+	}
 	this.canSee = function(x,y){
 		var temp = 1;
 		if(this.sprite.getScaleX() < 0)
@@ -324,7 +325,6 @@ function BadGuy(x,y,image){
 	this.forwardClear = function(direction){
 		if(direction){
 			if(collideRight(this.sprite)){
-				console.log('right collide')
 				return false
 			}
 				
@@ -334,7 +334,6 @@ function BadGuy(x,y,image){
 			return temp;
 		}else{
 			if(collideLeft(this.sprite)){
-				console.log('left collide')
 				return false
 			}
 			this.addX(this.velocityX*this.sprite.getScaleX());
