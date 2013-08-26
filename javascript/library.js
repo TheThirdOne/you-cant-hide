@@ -303,6 +303,8 @@ function BadGuy(x,y,image){
 					if(currentlevel.env.alarms < 0){
 						currentlevel.pauseText.setText('Game Over');
 						bindingsDown[pause]();
+						currentlevel.gameOver.setVisible(true);
+						hud.draw();
 					}
 					throw 'alert';
 				});

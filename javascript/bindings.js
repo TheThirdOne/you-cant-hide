@@ -9,6 +9,8 @@ function init_bindings(){
 	    console.log(evt.keyCode);
 	    if(currentlevel.pauseText.getText() == 'You Win')
 	    	startlevel(levels[currentlevel.i+1]())
+	    if(currentlevel.pauseText.getText() == 'Game Over')
+	    	startlevel(levels[currentlevel.i]())
 	    if((!currentlevel.env.paused || evt.keyCode == pause) && bindingsDown[evt.keyCode])
 	      bindingsDown[evt.keyCode]();
 	  }
