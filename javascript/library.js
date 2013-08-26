@@ -161,7 +161,8 @@ function loop(){
 		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy))?0:velocityX;
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);
-
+		if(currentlevel.thugs.length <= 0)
+			currentlevel.win();
 		var temp = 1 - ((currentlevel.env.cloaked < 90)?currentlevel.env.cloaked/90:1)*.75
 		currentlevel.spy.setOpacity(temp);
 		currentlevel.knife.setOpacity(temp);
@@ -188,26 +189,7 @@ function runEnemy(val, ind, arr){
 		thug.velocityY = 0;
 	}
 	if(thug.decay==66){
-		if(!thug.forwardClear(false))
-			thug.setDirection(1);
-
-		if(!thug.forwardClear(true))
-			thug.setDirection(-1);
-			
-		if(currentlevel.env.cloaked < 90 ){
-			if((thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || thug.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
-				currentlevel.alarm.setAnimation('alert');
-				currentlevel.alarm.afterFrame(3,function (){
-					play_multi_sound('alarm',0);
-					currentlevel.env.alarms--;
-					if(currentlevel.env.alarms < 0){
-						currentlevel.pauseText.setText('Game Over');
-						bindingsDown[pause]();
-					}
-					throw 'alert';
-				});
-			}
-		}
+		thug.job();
 	}else{
 		thug.decay--;
 		if(onGround(thug.sprite)){
@@ -302,6 +284,28 @@ function BadGuy(x,y,image){
 		this.sprite.afterFrame(5,function(){
 			this.setAnimation('death_stay')
 		});
+	}
+	this.job = function(){
+		if(!this.forwardClear(false))
+			this.setDirection(1);
+
+		if(!this.forwardClear(true))
+			this.setDirection(-1);
+			
+		if(currentlevel.env.cloaked < 90 ){
+			if((this.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()+32) || this.canSee(currentlevel.spy.getX()+16*currentlevel.spy.getScaleX(),currentlevel.spy.getY()))&& currentlevel.alarm.getAnimation() != 'alert'){
+				currentlevel.alarm.setAnimation('alert');
+				currentlevel.alarm.afterFrame(3,function (){
+					play_multi_sound('alarm',0);
+					currentlevel.env.alarms--;
+					if(currentlevel.env.alarms < 0){
+						currentlevel.pauseText.setText('Game Over');
+						bindingsDown[pause]();
+					}
+					throw 'alert';
+				});
+			}
+		}
 	}
 	this.canSee = function(x,y){
 		var temp = 1;

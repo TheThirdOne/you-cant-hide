@@ -68,6 +68,10 @@ levels.base = function(){
       if(this.clock.getAnimation() != 'run')
         this.clock.setAnimation('run');
     };
+    this.win = function(){
+      currentlevel.pauseText.setText('You Win');
+      bindingsDown[pause]();
+    };
   }
 levels[0] = function (){
     out = new levels.base();
@@ -97,7 +101,7 @@ levels[1] = function (){
     out.thugs = [];
     //out.thugs[0] = new BadGuy(400,300,enemysheet);
     //out.thugs[1] = new BadGuy(300,136,enemysheet);
-    //out.thugs[2] = new BadGuy(200,300,enemysheet);
+    out.thugs[0] = new BadGuy(1300,100,enemysheet);
     out.blocks = generateCollisions({image: blocksheet,
      blocks: [[0,364,2000,64],[-400,0,400,400], [800,264,64,100], [702,0,32,280], [1100,150,64,214], [734,118,598,32], [1300,0,32,118]]});
     out.crates = generateCollisions({image: cratesheet, blocks: [[300,300,320,64],[410,236,196,64],[492,172,64,64]]});
