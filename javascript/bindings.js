@@ -7,7 +7,9 @@ function init_bindings(){
 	  if(!keys[evt.keyCode] ){
 	    keys[evt.keyCode] = true;
 	    console.log(evt.keyCode);
-	    if((!currentlevel.env.paused || evt.keyCode == pause ) && bindingsDown[evt.keyCode])
+	    if(currentlevel.pauseText.getText() == 'You Win')
+	    	startlevel(levels[currentlevel.i+1]())
+	    if((!currentlevel.env.paused || evt.keyCode == pause) && bindingsDown[evt.keyCode])
 	      bindingsDown[evt.keyCode]();
 	  }
 	}
