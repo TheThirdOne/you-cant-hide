@@ -61,6 +61,7 @@ function init_bindings(){
 	  if(onGround(currentlevel.spy) && !tryLadder(currentlevel.spy)){
 	    console.log('jump');
 	    currentlevel.spy.setAnimation('jump');
+	    play_multi_sound('jump',0);
 	    velocityY -= 10;
 	    constants.jumped = true;
 	    player.setY(currentlevel.spy.getY()-20);

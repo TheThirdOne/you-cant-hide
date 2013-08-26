@@ -157,6 +157,8 @@ function loop(){
 			velocityX = (onGround(currentlevel.spy)||!keys[up])?0:-.9*velocityX;
 			velocityY += (onGround(currentlevel.spy)||!keys[up])?0:-4;
 			player.setDirection((onGround(currentlevel.spy)||!keys[up])?currentlevel.spy.getScaleX():-currentlevel.spy.getScaleX());
+			if(!onGround(currentlevel.spy)&&keys[up])
+				play_multi_sound('jump',0);
 		}
 		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy))?0:velocityX;
 		player.setY(currentlevel.spy.getY()+velocityY);
