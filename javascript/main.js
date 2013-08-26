@@ -38,6 +38,18 @@ levels.base = function(){
           align: 'center',
           visible: false
     });
+    this.gameOver = new Kinetic.Text({
+          x: 0,
+          y: 300,
+          text: 'Press any key to continue',
+          fontSize: 60,
+          fontFamily: 'Calibri',
+          fill: '#FFF',
+          width: 1000,
+          padding: 20,
+          align: 'center',
+          visible: false
+    });
     this.env = {
       goingLeft: false,
       goingRight: false,
@@ -69,7 +81,8 @@ levels.base = function(){
         this.clock.setAnimation('run');
     };
     this.win = function(){
-      currentlevel.pauseText.setText('You Win');
+      this.pauseText.setText('You Win');
+      this.gameOver.setVisible(true);
       bindingsDown[pause]();
     };
   }
@@ -230,6 +243,7 @@ function startlevel(level){
   hud.add(level.alarm);
   level.alarm.start();
   hud.add(level.pauseText);
+  hud.add(level.gameOver)
   stage.add(hud);
   currentlevel.interval = window.setInterval(loop,constants.playloop);
   init_bindings();
@@ -260,6 +274,7 @@ function reset(){
 var sounds = {};
 init_sound('hurt',5, .5);
 init_sound('alarm',1, .5);
+init_sound('jump',4, .2);
 function init_sound(type, channels, volume){
   sounds[type]=[]
   for (a=0;a<channels;a++) {                  

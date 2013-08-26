@@ -9,6 +9,8 @@ function init_bindings(){
 	    console.log(evt.keyCode);
 	    if(currentlevel.pauseText.getText() == 'You Win')
 	    	startlevel(levels[currentlevel.i+1]())
+	    if(currentlevel.pauseText.getText() == 'Game Over')
+	    	startlevel(levels[currentlevel.i]())
 	    if((!currentlevel.env.paused || evt.keyCode == pause) && bindingsDown[evt.keyCode])
 	      bindingsDown[evt.keyCode]();
 	  }
@@ -61,6 +63,7 @@ function init_bindings(){
 	  if(onGround(currentlevel.spy) && !tryLadder(currentlevel.spy)){
 	    console.log('jump');
 	    currentlevel.spy.setAnimation('jump');
+	    play_multi_sound('jump',0);
 	    velocityY -= 10;
 	    constants.jumped = true;
 	    player.setY(currentlevel.spy.getY()-20);
