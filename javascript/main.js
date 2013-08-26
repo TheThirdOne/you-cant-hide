@@ -99,12 +99,12 @@ levels[1] = function (){
     //out.thugs[1] = new BadGuy(300,136,enemysheet);
     //out.thugs[2] = new BadGuy(200,300,enemysheet);
     out.blocks = generateCollisions({image: blocksheet,
-     blocks: [[0,364,2000,64],[-400,0,400,400], [800,264,64,100], [702,0,32,280]]});
+     blocks: [[0,364,2000,64],[-400,0,400,400], [800,264,64,100], [702,0,32,280], [1100,150,64,214], [734,118,598,32], [1300,0,32,118]]});
     out.crates = generateCollisions({image: cratesheet, blocks: [[300,300,320,64],[410,236,196,64],[492,172,64,64]]});
-    out.ladders = generateCollisions({image: laddersheet, blocks: [[150,60,32,305]]});
+    out.ladders = generateCollisions({image: laddersheet, blocks: [[1000,86,32,278],[1200,86,32,278]]});
     out.spy= new Kinetic.Sprite({
       x: 100,
-      y: 36,
+      y: 200,
       image: spysheet,
       animation: 'idle',
       animations: personanimation,
