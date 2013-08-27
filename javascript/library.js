@@ -133,6 +133,7 @@ function loop(){
 					currentlevel.spy.setAnimation('jump_stay')
 				}
 				velocityY = (collideHead(currentlevel.spy))?1:velocityY;
+				velocityY -= (keys[up] && (collideLeft(currentlevel.spy) || collideRight(currentlevel.spy)) && velocityY > 0)?.7*velocityY:0;
 				if(keys[up])
 					bindingsDown[up]();
 				constants.jumped=true;
@@ -153,13 +154,13 @@ function loop(){
 				}
 				velocityY = 0;
 			}
-		if(velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy)){
-			velocityX = (onGround(currentlevel.spy)||!keys[up])?0:-.9*velocityX;
+		/*if(velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy)){
+			velocityX = 0;//(onGround(currentlevel.spy)||!keys[up])?0:-.9*velocityX;
 			velocityY += (onGround(currentlevel.spy)||!keys[up])?0:-4;
 			player.setDirection((onGround(currentlevel.spy)||!keys[up])?currentlevel.spy.getScaleX():-currentlevel.spy.getScaleX());
 			if(!onGround(currentlevel.spy)&&keys[up])
 				play_multi_sound('jump',0);
-		}
+		}*/
 		velocityX = (velocityX < 0 && collideLeft(currentlevel.spy) || velocityX > 0 && collideRight(currentlevel.spy))?0:velocityX;
 		player.setY(currentlevel.spy.getY()+velocityY);
 		player.setX(currentlevel.spy.getX()+velocityX);

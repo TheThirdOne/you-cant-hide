@@ -92,6 +92,11 @@ function init_bindings(){
 	    currentlevel.spy.setAnimation('walk');
 	    constants.goingRight = true;
 	    constants.goingLeft = false;
+	  }else if(collideLeft(currentlevel.spy)){
+	  	velocityY +=-5;
+	  	velocityX = constants.walkSpeed;
+	  	player.setDirection(-2*currentlevel.spy.getScaleX())
+	  	play_multi_sound('jump',0);
 	  }
 	  currentlevel.resetCloak();
 	};
@@ -108,6 +113,11 @@ function init_bindings(){
 	    currentlevel.spy.setAnimation('walk');
 	    constants.goingLeft = true;
 	    constants.goingRight = false;
+	  }else if(collideRight(currentlevel.spy)){
+	  	velocityY +=-5;
+	  	velocityX = -constants.walkSpeed;
+	  	player.setDirection(-2*currentlevel.spy.getScaleX())
+	  	play_multi_sound('jump',0);
 	  }
 	  currentlevel.resetCloak();
 	};

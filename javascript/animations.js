@@ -19,19 +19,19 @@ var alarm = {
          {name: 'alert', slides:[1,2,3,4]}],
          columns:4,rows:2,width:64,height:64};
          
-var personanimation = AnimationSet(person);
-var thuganimation = AnimationSet(person);
-var knifeanimation = AnimationSet(knife);
-var clockanimation = AnimationSet(clock);
-var alarmanimation = AnimationSet(alarm);
+var personanimation = new AnimationSet(person);
+var thuganimation = new AnimationSet(person);
+var knifeanimation = new AnimationSet(knife);
+var clockanimation = new AnimationSet(clock);
+var alarmanimation = new AnimationSet(alarm);
 
 
 function AnimationSet(data){
-  var out = {};
+  //var out = {};
   for(var i = 0; i < data.anims.length; i++){
-    out[data.anims[i].name]=Animation(data.anims[i].slides,data);
+    this[data.anims[i].name]=Animation(data.anims[i].slides,data);
   }
-  return out;
+  //return out;
 }
 function Animation(slides, data){
   var x,y;
